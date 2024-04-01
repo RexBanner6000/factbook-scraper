@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "factbook-scraper"
+version = "0.1.0"
+description = "Script for scraping data from CIA world factbook archives"
+authors = ["RexBanner6000 <tghaynes@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^2.2.1"
+selenium = "^4.19.0"
+bs4 = "^0.0.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.3.0"
+flake8 = "^7.0.0"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
