@@ -41,7 +41,7 @@ class CIALocalScraper:
             soup = BeautifulSoup(fp, "html.parser")
         options = soup.find_all("option")
         for tag in options:
-            if re.match("select a country", tag.text.lower()):
+            if re.search("select a country", tag.text.lower()) or re.search("world", tag.text.lower()):
                 continue
             country_records.append(
                 CountryRecord(
