@@ -45,7 +45,7 @@ class CIALocalScraper:
                 continue
             country_records.append(
                 CountryRecord(
-                    country_name=tag.text,
+                    country_name=tag.text.lstrip(),
                     country_code=tag.get("value")[5:7],
                     base_path=self.geos_path
                 )
