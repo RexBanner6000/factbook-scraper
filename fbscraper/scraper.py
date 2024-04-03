@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 
+from utils import get_dollar_string
+
 
 class CIALocalScraper:
     def __init__(
@@ -18,9 +20,9 @@ class CIALocalScraper:
         gdps = []
         for row in table_rows:
             cells = row.find_all("td")
-            if gdp_str := re.findall(r"(?:\$(\d+ \w+))", cells[1].get_text()):
+            if gdp_str := get_dollar_string(cells[1].get_text()):
                 countries.append(cells[0].get_text().replace("\n", ""))
-                gdps.append(gdp_str[0])
+                gdps.append(gdp_str)
         return pd.Series(gdps, index=countries)
 
 
