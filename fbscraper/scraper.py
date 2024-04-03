@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 
-from utils import get_dollar_string
+from utils import get_dollar_string, convert_str_to_float
 
 
 class CIALocalScraper:
@@ -22,7 +22,7 @@ class CIALocalScraper:
             cells = row.find_all("td")
             if gdp_str := get_dollar_string(cells[1].get_text()):
                 countries.append(cells[0].get_text().replace("\n", ""))
-                gdps.append(gdp_str)
+                gdps.append(convert_str_to_float(gdp_str))
         return pd.Series(gdps, index=countries)
 
 

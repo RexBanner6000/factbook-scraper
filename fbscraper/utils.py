@@ -8,5 +8,14 @@ def get_dollar_string(raw_str: str) -> Optional[str]:
     return None
 
 
-def convert_str_to_number(number_str):
-    pass
+def convert_str_to_float(number_str: str) -> float:
+    multipliers = {
+        "thousand": 1000,
+        "million": 1_000_000,
+        "billion": 1_000_000_000,
+        "trillion": 1_000_000_000_000
+    }
+    string_split = number_str.split(" ")
+    if len(string_split) == 1:
+        return float(number_str)
+    return float(string_split[0]) * multipliers[string_split[1]]
