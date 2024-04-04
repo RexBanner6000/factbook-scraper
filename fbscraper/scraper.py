@@ -16,6 +16,12 @@ class CIALocalScraper:
     ):
         self.base_url = base_url
 
+    def get_factbook_df(self) -> pd.DataFrame:
+        factbook_df = pd.DataFrame()
+        purchasing_power_parity = self.get_purchasing_power_parity()
+        growth = self.get_population_growth_rate()
+        factbook_df["purchasing_power_parity"] = purchasing_power_parity
+
     def get_purchasing_power_parity(self):
         with open(self.base_url + "fields/2001.html", "r") as fp:
             soup = BeautifulSoup(fp, "html.parser")
@@ -45,12 +51,12 @@ class CIALocalScraper:
         growth_rates = []
         for row in table_rows:
             cells = row.find_all("td")
-            if growth_str := get_percentage_from_string(cells[1].get_text()):
+            if growth_prc := get_percentage_from_string(cells[1].get_text()):
                 countries.append(cells[0].get_text().replace("\n", ""))
-                growth_rates.append(float(growth_str.group(0)))
+                growth_rates.append(float(growth_prc))
         return pd.Series(growth_rates, index=countries)
 
 
 if __name__ == "__main__":
     scraper = CIALocalScraper(base_url="./data/factbook-2017/")
-    print(scraper.get_population_growth_rate())
+    factbook_df = scraper.get_factbook_df()
