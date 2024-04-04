@@ -1,8 +1,9 @@
-from bs4 import BeautifulSoup
-import pandas as pd
 import re
 
-from utils import get_dollar_string, convert_str_to_float, get_percentage_from_string
+import pandas as pd
+from bs4 import BeautifulSoup
+from utils import (convert_str_to_float, get_dollar_string,
+                   get_percentage_from_string)
 
 
 class CIALocalScraper:
