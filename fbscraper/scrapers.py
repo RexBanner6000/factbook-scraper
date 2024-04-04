@@ -12,9 +12,8 @@ from utils import (
 
 #TODO: make a separate class for each website format type that generates a BeautifulSoup object and pass to each of these functions
 class CIAScraper:
-    def get_purchasing_power_parity(self, soup: BeautifulSoup) -> dict[str, float]:
-        with open(self.base_url + "fields/2001.html", "r") as fp:
-            soup = BeautifulSoup(fp, "html.parser")
+    @staticmethod
+    def get_purchasing_power_parity(soup: BeautifulSoup) -> dict[str, float]:
         table_rows = [
             x.find_parent("tr")
             for x in soup.find_all(string=re.compile(r"\$"))
@@ -30,9 +29,8 @@ class CIAScraper:
                 ] = convert_str_to_float(gdp_str)
         return purchasing_power_parity
 
-    def get_population_growth_rate(self, soup: BeautifulSoup):
-        with open(self.base_url + "fields/2002.html", "r") as fp:
-            soup = BeautifulSoup(fp, "html.parser")
+    @staticmethod
+    def get_population_growth_rate(soup: BeautifulSoup) -> dict[str, float]:
         table_rows = [
             x.find_parent("tr")
             for x in soup.find_all(string=re.compile(r"\d%"))
