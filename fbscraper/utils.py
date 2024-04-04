@@ -3,7 +3,7 @@ from typing import Optional
 
 
 def get_dollar_string(raw_str: str) -> Optional[str]:
-    if m:=re.search(r"(?:\$(\d+(?:\.\d+)? \w+))", raw_str):
+    if m := re.search(r"(?:\$(\d+(?:\.\d+)? \w+))", raw_str):
         return m.group(1)
     return None
 
@@ -13,7 +13,7 @@ def convert_str_to_float(number_str: str) -> float:
         "thousand": 1000,
         "million": 1_000_000,
         "billion": 1_000_000_000,
-        "trillion": 1_000_000_000_000
+        "trillion": 1_000_000_000_000,
     }
     string_split = number_str.split(" ")
     if len(string_split) == 1:

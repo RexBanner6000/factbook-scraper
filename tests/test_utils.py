@@ -1,7 +1,10 @@
 import pytest
 
-from fbscraper.utils import (convert_str_to_float, get_dollar_string,
-                             get_percentage_from_string)
+from fbscraper.utils import (
+    convert_str_to_float,
+    get_dollar_string,
+    get_percentage_from_string,
+)
 
 
 def test_get_dollar_string():
