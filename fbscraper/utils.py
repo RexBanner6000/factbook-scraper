@@ -28,6 +28,19 @@ def get_percentage_from_string(raw_str: str) -> Optional[float]:
 
 
 def get_country_name(raw_str: str) -> Optional[str]:
-    if m := re.search(r"[\w ]+", raw_str):
+    if m := re.search(r"\w[\w ]+", raw_str):
         return m.group(0)
     return None
+
+
+def get_field_types(fb_type: str = "local"):
+    if fb_type == "local":
+        parent_type = "tr"
+        child_type = "td"
+    elif fb_type == "web":
+        parent_type = "div"
+        child_type = "h3"
+    else:
+        parent_type = None
+        child_type = None
+    return parent_type, child_type

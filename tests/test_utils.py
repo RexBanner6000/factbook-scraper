@@ -4,6 +4,7 @@ from fbscraper.utils import (
     convert_str_to_float,
     get_dollar_string,
     get_percentage_from_string,
+    get_country_name
 )
 
 
@@ -22,3 +23,7 @@ def test_get_percentage_string():
     assert get_percentage_from_string("50%") == 0.5
     assert get_percentage_from_string("10004.43%") == 100.0443
     assert get_percentage_from_string("75") is None
+
+
+def test_get_country_name():
+    assert get_country_name("     Afghanistan") == "Afghanistan"

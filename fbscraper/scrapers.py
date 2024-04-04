@@ -10,8 +10,21 @@ from utils import (
 )
 
 
-#TODO: make a separate class for each website format type that generates a BeautifulSoup object and pass to each of these functions
 class CIAScraper:
+    def __init__(self, year: int):
+        self.year = year
+
+    def get_countries(self, soup: BeautifulSoup):
+        options = soup.find_all("option")
+        countries = []
+        for tag in options:
+            if re.search(r"select a country", tag.text.lower()):
+                continue
+            countries.append(get_country_name(tag.text))
+        countries_df = pd.DataFrame(index=countries)
+        countries_df["year"] = self.year
+        return countries_df
+
     @staticmethod
     def get_purchasing_power_parity(soup: BeautifulSoup) -> dict[str, float]:
         table_rows = [
