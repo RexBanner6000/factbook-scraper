@@ -10,24 +10,9 @@ from utils import (
 )
 
 
-class CIALocalScraper:
-    def __init__(
-        self,
-        base_url: str,
-    ):
-        self.base_url = base_url
-
-    def get_factbook_df(self) -> pd.DataFrame:
-        purchasing_power_parity = pd.DataFrame.from_dict(
-            self.get_purchasing_power_parity(), orient="index", columns=["purchasing_power_parity"]
-        )
-        growth = pd.DataFrame.from_dict(
-            self.get_population_growth_rate(), orient="index", columns=["growth"]
-        )
-        factbook_df = purchasing_power_parity.join(growth, how="outer")
-        return factbook_df
-
-    def get_purchasing_power_parity(self) -> dict[str, float]:
+#TODO: make a separate class for each website format type that generates a BeautifulSoup object and pass to each of these functions
+class CIAScraper:
+    def get_purchasing_power_parity(self, soup: BeautifulSoup) -> dict[str, float]:
         with open(self.base_url + "fields/2001.html", "r") as fp:
             soup = BeautifulSoup(fp, "html.parser")
         table_rows = [
@@ -45,7 +30,7 @@ class CIALocalScraper:
                 ] = convert_str_to_float(gdp_str)
         return purchasing_power_parity
 
-    def get_population_growth_rate(self):
+    def get_population_growth_rate(self, soup: BeautifulSoup):
         with open(self.base_url + "fields/2002.html", "r") as fp:
             soup = BeautifulSoup(fp, "html.parser")
         table_rows = [
@@ -58,9 +43,3 @@ class CIALocalScraper:
             if growth_prc := get_percentage_from_string(cells[1].get_text()):
                 growth_rates[get_country_name(cells[0].get_text())] = growth_prc
         return growth_rates
-
-
-if __name__ == "__main__":
-    scraper = CIALocalScraper(base_url="./data/factbook-2002/")
-    factbook_df = scraper.get_factbook_df()
-    print(factbook_df.head())
