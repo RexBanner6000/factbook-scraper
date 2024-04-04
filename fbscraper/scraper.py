@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 
-from utils import get_dollar_string, convert_str_to_float
+from utils import get_dollar_string, convert_str_to_float, get_percentage_from_string
 
 
 class CIALocalScraper:
@@ -30,17 +30,18 @@ class CIALocalScraper:
     def get_population_growth_rate(self):
         with open(self.base_url + "fields/2002.html", "r") as fp:
             soup = BeautifulSoup(fp, "html.parser")
-        table_rows = [x.find_parent("tr") for x in soup.find_all(string=re.compile("%"))]
+        table_rows = [x.find_parent("tr") for x in soup.find_all(string=re.compile(r"\d%"))]
         countries = []
         growth_rates = []
         for row in table_rows:
             cells = row.find_all("td")
-            if growth_str := re.match(r"(\d+(?:\.\d+))", cells[1].get_text()):
+            if growth_str := get_percentage_from_string(cells[1].get_text()):
                 countries.append(cells[0].get_text().replace("\n", ""))
-                growth_rates.append(float(growth_str))
+                growth_rates.append(float(growth_str.group(0)))
         return pd.Series(growth_rates, index=countries)
 
 
 if __name__ == "__main__":
     scraper = CIALocalScraper(base_url="./data/factbook-2017/")
-    print(scraper.get_purchasing_power_parity())
+    print(scraper.get_population_growth_rate())
+
