@@ -47,14 +47,12 @@ class CIALocalScraper:
             x.find_parent("tr")
             for x in soup.find_all(string=re.compile(r"\d%"))
         ]
-        countries = []
-        growth_rates = []
+        growth_rates = {}
         for row in table_rows:
             cells = row.find_all("td")
             if growth_prc := get_percentage_from_string(cells[1].get_text()):
-                countries.append(cells[0].get_text().replace("\n", ""))
-                growth_rates.append(growth_prc)
-        return pd.Series(growth_rates, index=countries)
+                growth_rates[cells[0].get_text().replace("\n", "")] = growth_prc
+        return growth_rates
 
 
 if __name__ == "__main__":
