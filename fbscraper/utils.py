@@ -25,3 +25,9 @@ def get_percentage_from_string(raw_str: str) -> Optional[float]:
     if m := re.search(r"(\d+(?:\.\d+)?)%", raw_str):
         return float(m.group(1)) / 100
     return None
+
+
+def get_country_name(raw_str: str) -> Optional[str]:
+    if m := re.search(r"[\w ]+", raw_str):
+        return m.group(0)
+    return None
