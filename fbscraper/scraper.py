@@ -22,23 +22,23 @@ class CIALocalScraper:
         growth = self.get_population_growth_rate()
         factbook_df["purchasing_power_parity"] = purchasing_power_parity
 
-    def get_purchasing_power_parity(self):
+    def get_purchasing_power_parity(self) -> dict[str, float]:
         with open(self.base_url + "fields/2001.html", "r") as fp:
             soup = BeautifulSoup(fp, "html.parser")
         table_rows = [
             x.find_parent("tr")
             for x in soup.find_all(string=re.compile(r"\$"))
         ]
-        countries = []
-        gdps = []
+        purchasing_power_parity = {}
         for row in table_rows:
             if row is None:
                 continue
             cells = row.find_all("td")
             if gdp_str := get_dollar_string(cells[1].get_text()):
-                countries.append(cells[0].get_text().replace("\n", ""))
-                gdps.append(convert_str_to_float(gdp_str))
-        return pd.Series(gdps, index=countries)
+                purchasing_power_parity[
+                    cells[0].get_text().replace("\n", "")
+                ] = convert_str_to_float(gdp_str)
+        return purchasing_power_parity
 
     def get_population_growth_rate(self):
         with open(self.base_url + "fields/2002.html", "r") as fp:
@@ -53,7 +53,7 @@ class CIALocalScraper:
             cells = row.find_all("td")
             if growth_prc := get_percentage_from_string(cells[1].get_text()):
                 countries.append(cells[0].get_text().replace("\n", ""))
-                growth_rates.append(float(growth_prc))
+                growth_rates.append(growth_prc)
         return pd.Series(growth_rates, index=countries)
 
 
