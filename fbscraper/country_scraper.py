@@ -7,11 +7,13 @@ from bs4 import BeautifulSoup
 from fbscraper.field_scrapers import (
     get_areas_from_web,
     get_border_countries,
+    get_elevation,
     get_climate,
     get_coastline_from_web,
     get_terrain,
 )
 from fbscraper.utils import get_country_name
+import re
 
 field_scrapers = [
     get_areas_from_web,
@@ -19,6 +21,7 @@ field_scrapers = [
     get_terrain,
     get_border_countries,
     get_climate,
+    get_elevation
 ]
 
 
@@ -37,6 +40,8 @@ class CIAScraper:
         soup = self.make_scraper(self.countries_url)
         links = soup.find_all("h3", class_="mt10")
         for tag in links:
+            if re.search(r"\sOcean\s?", tag.text):
+                continue
             self.countries[get_country_name(tag.text)] = {
                 "link": "https://www.cia.gov" + tag.a["href"]
             }

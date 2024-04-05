@@ -43,3 +43,8 @@ def get_border_countries(soup: BeautifulSoup):
             )
         }
     return None
+
+
+def get_elevation(soup: BeautifulSoup):
+    if para := find_div_by_string(soup, "Elevation"):
+        return utils.get_elevations_from_str(para.get_text())
