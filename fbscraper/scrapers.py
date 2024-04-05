@@ -8,7 +8,8 @@ from utils import (
     get_percentage_from_string,
     get_country_name,
     get_age_structures,
-    get_areas_from_str
+    get_areas_from_str,
+    get_distance_from_str
 )
 
 
@@ -88,3 +89,20 @@ class CIAScraper:
                 areas[get_country_name(cells[0].get_text())] = area
 
         return pd.DataFrame.from_dict(areas, orient="index")
+
+    @staticmethod
+    def get_coastline(soup: BeautifulSoup) -> pd.DataFrame:
+        table_rows = [
+            x.find_parent("tr")
+            for x in soup.find_all(string=re.compile(r"km"))
+        ]
+        coastlines = {}
+        for row in table_rows:
+            if row is None:
+                continue
+            cells = row.find_all("td")
+            coastline = get_distance_from_str(cells[1].get_text())
+            if coastline is not None:
+                coastlines[get_country_name(cells[0].get_text())] = coastline
+
+        return pd.DataFrame.from_dict(coastlines, orient="index", columns=["coastline"])

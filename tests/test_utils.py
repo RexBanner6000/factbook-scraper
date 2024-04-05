@@ -4,7 +4,8 @@ from fbscraper.utils import (
     convert_str_to_float,
     get_dollar_string,
     get_percentage_from_string,
-    get_country_name
+    get_country_name,
+    get_distance_from_str
 )
 
 
@@ -27,3 +28,11 @@ def test_get_percentage_string():
 
 def test_get_country_name():
     assert get_country_name("     Afghanistan") == "Afghanistan"
+
+
+def test_get_distance_from_string():
+    assert get_distance_from_str("10 km") == 10
+    assert get_distance_from_str("1,000.5 km") == 1000.5
+    assert get_distance_from_str("100km") == 100
+    assert get_distance_from_str("100") is None
+    assert get_distance_from_str("0 km") == 0
