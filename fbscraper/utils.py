@@ -57,8 +57,13 @@ def get_age_structures(raw_str: str) -> Optional[dict[str, float]]:
 
 
 def get_areas_from_str(raw_str: str) -> Optional[dict[str, float]]:
-    if m := re.findall(r"(\w+):[ \n]?((?:\d{1,3},?)+) sq km", raw_str):
-        areas = {x[0]: float(x[1].replace(",", "")) for x in m}
+    if m := re.findall(r"(\w+):[ \n]?((?:\d{1,3},?)+(?:\.\d+)?)\s(\w+\s)?sq km(?: less than)?", raw_str):
+        areas = {}
+        for match in m:
+            if match[-1] == "":
+                areas[match[0]] = float(match[1].replace(",", ""))
+            else:
+                areas[match[0]] = convert_str_to_float(f"{match[1]} {match[2]}")
         return areas
     return None
 
