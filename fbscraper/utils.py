@@ -66,3 +66,9 @@ def get_areas_from_str(raw_str: str) -> Optional[dict[str, float]]:
 def get_distance_from_str(raw_str: str) -> Optional[float]:
     if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+)?)+\s?km", raw_str):
         return float(m.group(1).replace(",", ""))
+
+
+def get_death_rate_from_string(raw_str: str) -> Optional[float]:
+    if m := re.search(r"(\d{1,3}(?:\.\d+)?) deaths", raw_str):
+        return float(m.group(1))
+    return None

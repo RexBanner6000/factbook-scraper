@@ -5,7 +5,8 @@ from fbscraper.utils import (
     get_dollar_string,
     get_percentage_from_string,
     get_country_name,
-    get_distance_from_str
+    get_distance_from_str,
+    get_death_rate_from_string
 )
 
 
@@ -36,3 +37,9 @@ def test_get_distance_from_string():
     assert get_distance_from_str("100km") == 100
     assert get_distance_from_str("100") is None
     assert get_distance_from_str("0 km") == 0
+
+
+def test_get_death_rate_from_string():
+    assert get_death_rate_from_string("12.7 deaths per 1000") == 12.7
+    assert get_death_rate_from_string("10 deaths per 1000") == 10
+    assert get_death_rate_from_string("10 per 1000") is None

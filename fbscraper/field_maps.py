@@ -3,7 +3,8 @@ original_field_map = {
     "growth_rates": 2002,
     "age_structures": 2010,
     "areas": 2147,
-    "coastline": 2060
+    "coastline": 2060,
+    "death_rate": 2066
 }
 
 later_field_map = {
@@ -11,7 +12,8 @@ later_field_map = {
     "growth_rates": 344,
     "age_structures": 341,
     "areas": 279,
-    "coastline": 282
+    "coastline": 282,
+    "death_rate": 346
 }
 
 web_field_map = {

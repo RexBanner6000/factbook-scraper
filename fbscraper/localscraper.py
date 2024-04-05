@@ -40,6 +40,11 @@ class CIALocalScraper(CIAScraper):
             coastline_df = self.get_coastline(soup)
             factbook_df = factbook_df.join(coastline_df, how="outer")
 
+        with open(self.base_url + f"fields/{self.field_maps['death_rate']}.html", "r") as fp:
+            soup = BeautifulSoup(fp, "html.parser")
+            death_rate_df = self.get_death_rate(soup)
+            factbook_df = factbook_df.join(death_rate_df, how="outer")
+
         return factbook_df
 
 

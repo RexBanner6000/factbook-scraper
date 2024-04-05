@@ -9,7 +9,8 @@ from utils import (
     get_country_name,
     get_age_structures,
     get_areas_from_str,
-    get_distance_from_str
+    get_distance_from_str,
+    get_death_rate_from_string
 )
 
 
@@ -89,8 +90,19 @@ class CIAScraper:
             coastline = get_distance_from_str(cells[1].get_text())
             if coastline is not None:
                 coastlines[get_country_name(cells[0].get_text())] = coastline
-
         return pd.DataFrame.from_dict(coastlines, orient="index", columns=["coastline"])
+
+    @staticmethod
+    def get_death_rate(soup: BeautifulSoup) -> pd.DataFrame:
+        table_rows = get_table_rows(soup, re.compile(r"deaths"))
+        death_rates = {}
+        for row in table_rows:
+            if row is None:
+                continue
+            cells = row.find_all("td")
+            if death_rate := get_death_rate_from_string(cells[1].get_text()):
+                death_rates[get_country_name(cells[0].get_text())] = death_rate
+        return pd.DataFrame.from_dict(death_rates, orient="index", columns=["death_rate"])
 
 
 def get_table_rows(soup: BeautifulSoup, pattern: re.Pattern):
