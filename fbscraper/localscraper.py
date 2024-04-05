@@ -33,14 +33,14 @@ class CIALocalScraper(CIAScraper):
 
 
 if __name__ == "__main__":
-    # scraper = CIALocalScraper(
-    #     base_url="./data/factbook-2002/",
-    #     field_maps=original_field_map,
-    #     year=2002
-    # )
-    # factbook_df = scraper.get_factbook_df()
-    # print("Factbook 2002")
-    # print(factbook_df.head())
+    scraper = CIALocalScraper(
+        base_url="./data/factbook-2002/",
+        field_maps=original_field_map,
+        year=2002
+    )
+    factbook_df = scraper.get_factbook_df()
+    print("Factbook 2002")
+    print(factbook_df.head())
 
     scraper = CIALocalScraper(
         base_url="./data/factbook-2019/",
