@@ -3,9 +3,9 @@ from bs4 import BeautifulSoup
 import requests
 from typing import Callable, List
 from fbscraper.utils import get_country_name
-from fbscraper.field_scrapers import get_areas_from_web, get_coastline_from_web, get_terrain, get_border_countries
+from fbscraper.field_scrapers import get_areas_from_web, get_coastline_from_web, get_terrain, get_border_countries, get_climate
 
-field_scrapers = [get_areas_from_web, get_coastline_from_web, get_terrain, get_border_countries]
+field_scrapers = [get_areas_from_web, get_coastline_from_web, get_terrain, get_border_countries, get_climate]
 
 
 class CIAScraper:

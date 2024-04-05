@@ -29,6 +29,11 @@ def get_terrain(soup: BeautifulSoup):
     return None
 
 
+def get_climate(soup: BeautifulSoup):
+    if para := find_div_by_string(soup, "Climate"):
+        return {"climate": para.get_text()}
+
+
 def get_border_countries(soup: BeautifulSoup):
     if para := find_div_by_string(soup, "Land boundaries"):
         return {"border_countries": utils.get_boundary_countries_from_str(para.get_text())}
