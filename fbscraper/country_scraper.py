@@ -3,9 +3,9 @@ from bs4 import BeautifulSoup
 import requests
 from typing import Callable, List
 from fbscraper.utils import get_country_name
-from fbscraper.field_scrapers import get_areas_from_web
+from fbscraper.field_scrapers import get_areas_from_web, get_coastline_from_web
 
-field_scrapers = [get_areas_from_web]
+field_scrapers = [get_areas_from_web, get_coastline_from_web]
 
 
 class CIAScraper:
@@ -29,8 +29,6 @@ class CIAScraper:
 
     def scrape_countries(self, field_scrapers: List[Callable]):
         for country, data in self.countries.items():
-            if "Coral" in country:
-                a = 0
             print(f"Scraping {country}...")
             soup = self.make_scraper(data["link"])
             for field_scraper in field_scrapers:
@@ -40,21 +38,11 @@ class CIAScraper:
 
 
 if __name__ == "__main__":
-    # scraper = CIAScraper(
-    #     countries_url="https://www.cia.gov/the-world-factbook/field/country-name/",
-    #     year=2024
-    # )
-    # scraper.get_country_codes()
-    # scraper.scrape_countries(field_scrapers)
-    # factbook_df = pd.DataFrame.from_dict(scraper.countries, orient="index")
-    # print(factbook_df.head())
-
     scraper = CIAScraper(
         countries_url="https://www.cia.gov/the-world-factbook/about/archives/2023/field/country-name/",
-        year=2023
+        year=2024
     )
     scraper.get_country_codes()
     scraper.scrape_countries(field_scrapers)
-    print(scraper.countries)
     factbook_df = pd.DataFrame.from_dict(scraper.countries, orient="index")
     print(factbook_df.head())
