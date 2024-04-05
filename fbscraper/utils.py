@@ -1,5 +1,5 @@
 import re
-from typing import Optional
+from typing import Optional, List
 
 
 def get_dollar_string(raw_str: str) -> Optional[str]:
@@ -82,4 +82,10 @@ def get_death_rate_from_string(raw_str: str) -> Optional[float]:
 def get_electricity_from_str(raw_str: str) -> Optional[float]:
     if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+))\s(\w+)\skWh", raw_str):
         return convert_str_to_float(f"{m.group(1).replace(',', '')} {m.group(2)}")
+    return None
+
+
+def get_boundary_countries_from_str(raw_str: str) -> Optional[List[str]]:
+    if m := re.findall(r"(\w[\w ]+) (?:(?:\d{1,3},?)+(?:\.\d+)?) km", raw_str):
+        return m
     return None

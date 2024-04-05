@@ -27,3 +27,9 @@ def get_terrain(soup: BeautifulSoup):
     if para := find_div_by_string(soup, "Terrain"):
         return {"terrain": para.get_text()}
     return None
+
+
+def get_border_countries(soup: BeautifulSoup):
+    if para := find_div_by_string(soup, "Land boundaries"):
+        return {"border_countries": utils.get_boundary_countries_from_str(para.get_text())}
+    return None
