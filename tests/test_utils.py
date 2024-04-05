@@ -2,12 +2,12 @@ import pytest
 
 from fbscraper.utils import (
     convert_str_to_float,
-    get_dollar_string,
-    get_percentage_from_string,
     get_country_name,
-    get_distance_from_str,
     get_death_rate_from_string,
-    get_electricity_from_str
+    get_distance_from_str,
+    get_dollar_string,
+    get_electricity_from_str,
+    get_percentage_from_string,
 )
 
 
@@ -47,5 +47,8 @@ def test_get_death_rate_from_string():
 
 
 def test_get_electricity_from_str():
-    assert get_electricity_from_str("Afghanistan	453.75 million kWh (2000)") == 453_750_000
+    assert (
+        get_electricity_from_str("Afghanistan	453.75 million kWh (2000)")
+        == 453_750_000
+    )
     assert get_electricity_from_str("5,205.4 kWh") == 5205.4

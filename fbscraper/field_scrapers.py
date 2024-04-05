@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+
 from fbscraper import utils
 
 
@@ -36,5 +37,9 @@ def get_climate(soup: BeautifulSoup):
 
 def get_border_countries(soup: BeautifulSoup):
     if para := find_div_by_string(soup, "Land boundaries"):
-        return {"border_countries": utils.get_boundary_countries_from_str(para.get_text())}
+        return {
+            "border_countries": utils.get_boundary_countries_from_str(
+                para.get_text()
+            )
+        }
     return None

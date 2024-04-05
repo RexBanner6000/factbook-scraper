@@ -1,5 +1,5 @@
 import re
-from typing import Optional, List
+from typing import List, Optional
 
 
 def get_dollar_string(raw_str: str) -> Optional[str]:
@@ -51,19 +51,24 @@ def get_age_structures(raw_str: str) -> Optional[dict[str, float]]:
         r"(?:(\d{1,2}(?:-\d{1,2})?) years:?(?: and over:)?\s?(\d{1,2}(?:\.\d{1,2})?)%)"
     )
     if m := re.findall(pattern, raw_str):
-        age_structure = {x[0]: float(x[1])/100 for x in m}
+        age_structure = {x[0]: float(x[1]) / 100 for x in m}
         return age_structure
     return None
 
 
 def get_areas_from_str(raw_str: str) -> Optional[dict[str, float]]:
-    if m := re.findall(r"(\w+):[ \n]?((?:\d{1,3},?)+(?:\.\d+)?)\s(\w+\s)?sq km(?: less than)?", raw_str):
+    if m := re.findall(
+        r"(\w+):[ \n]?((?:\d{1,3},?)+(?:\.\d+)?)\s(\w+\s)?sq km(?: less than)?",
+        raw_str,
+    ):
         areas = {}
         for match in m:
             if match[-1] == "":
                 areas[match[0]] = float(match[1].replace(",", ""))
             else:
-                areas[match[0]] = convert_str_to_float(f"{match[1]} {match[2]}")
+                areas[match[0]] = convert_str_to_float(
+                    f"{match[1]} {match[2]}"
+                )
         return areas
     return None
 
@@ -81,7 +86,9 @@ def get_death_rate_from_string(raw_str: str) -> Optional[float]:
 
 def get_electricity_from_str(raw_str: str) -> Optional[float]:
     if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+))\s(\w+)\skWh", raw_str):
-        return convert_str_to_float(f"{m.group(1).replace(',', '')} {m.group(2)}")
+        return convert_str_to_float(
+            f"{m.group(1).replace(',', '')} {m.group(2)}"
+        )
     return None
 
 

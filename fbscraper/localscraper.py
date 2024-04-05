@@ -1,7 +1,8 @@
-from fbscraper.scrapers import CIAScraper
-from bs4 import BeautifulSoup
 import pandas as pd
-from fbscraper.field_maps import original_field_map, later_field_map
+from bs4 import BeautifulSoup
+
+from fbscraper.field_maps import later_field_map, original_field_map
+from fbscraper.scrapers import CIAScraper
 
 
 class CIALocalScraper(CIAScraper):
@@ -15,40 +16,64 @@ class CIALocalScraper(CIAScraper):
             soup = BeautifulSoup(fp, "html.parser")
             factbook_df = self.get_countries(soup)
 
-        with open(self.base_url + f"fields/{self.field_maps['growth_rates']}.html", "r") as fp:
+        with open(
+            self.base_url + f"fields/{self.field_maps['growth_rates']}.html",
+            "r",
+        ) as fp:
             soup = BeautifulSoup(fp, "html.parser")
             growth = self.get_population_growth_rate(soup)
             factbook_df = factbook_df.join(growth, how="outer")
 
-        with open(self.base_url + f"fields/{self.field_maps['purchasing_power_parity']}.html", "r") as fp:
+        with open(
+            self.base_url
+            + f"fields/{self.field_maps['purchasing_power_parity']}.html",
+            "r",
+        ) as fp:
             soup = BeautifulSoup(fp, "html.parser")
             purchasing_power_parity = self.get_purchasing_power_parity(soup)
-            factbook_df = factbook_df.join(purchasing_power_parity, how="outer")
+            factbook_df = factbook_df.join(
+                purchasing_power_parity, how="outer"
+            )
 
-        with open(self.base_url + f"fields/{self.field_maps['age_structures']}.html", "r") as fp:
+        with open(
+            self.base_url + f"fields/{self.field_maps['age_structures']}.html",
+            "r",
+        ) as fp:
             soup = BeautifulSoup(fp, "html.parser")
             age_structures = self.get_age_structure(soup)
             factbook_df = factbook_df.join(age_structures, how="outer")
 
-        with open(self.base_url + f"fields/{self.field_maps['areas']}.html", "r") as fp:
+        with open(
+            self.base_url + f"fields/{self.field_maps['areas']}.html", "r"
+        ) as fp:
             soup = BeautifulSoup(fp, "html.parser")
             areas = self.get_areas(soup)
             factbook_df = factbook_df.join(areas, how="outer")
 
-        with open(self.base_url + f"fields/{self.field_maps['coastline']}.html", "r") as fp:
+        with open(
+            self.base_url + f"fields/{self.field_maps['coastline']}.html", "r"
+        ) as fp:
             soup = BeautifulSoup(fp, "html.parser")
             coastline_df = self.get_coastline(soup)
             factbook_df = factbook_df.join(coastline_df, how="outer")
 
-        with open(self.base_url + f"fields/{self.field_maps['death_rate']}.html", "r") as fp:
+        with open(
+            self.base_url + f"fields/{self.field_maps['death_rate']}.html", "r"
+        ) as fp:
             soup = BeautifulSoup(fp, "html.parser")
             death_rate_df = self.get_death_rate(soup)
             factbook_df = factbook_df.join(death_rate_df, how="outer")
 
-        with open(self.base_url + f"fields/{self.field_maps['electricity_consumption']}.html", "r") as fp:
+        with open(
+            self.base_url
+            + f"fields/{self.field_maps['electricity_consumption']}.html",
+            "r",
+        ) as fp:
             soup = BeautifulSoup(fp, "html.parser")
             electricity_consumption_df = self.get_electrical_consumption(soup)
-            factbook_df = factbook_df.join(electricity_consumption_df, how="outer")
+            factbook_df = factbook_df.join(
+                electricity_consumption_df, how="outer"
+            )
 
         return factbook_df
 
@@ -57,16 +82,14 @@ if __name__ == "__main__":
     scraper = CIALocalScraper(
         base_url="./data/factbook-2002/",
         field_maps=original_field_map,
-        year=2002
+        year=2002,
     )
     factbook_df = scraper.get_factbook_df()
     print("Factbook 2002")
     print(factbook_df.head())
 
     scraper = CIALocalScraper(
-        base_url="./data/factbook-2019/",
-        field_maps=later_field_map,
-        year=2019
+        base_url="./data/factbook-2019/", field_maps=later_field_map, year=2019
     )
     factbook_df = scraper.get_factbook_df()
     print("Factbook 2019")

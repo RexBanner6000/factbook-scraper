@@ -4,14 +4,14 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from utils import (
     convert_str_to_float,
-    get_dollar_string,
-    get_percentage_from_string,
-    get_country_name,
     get_age_structures,
     get_areas_from_str,
-    get_distance_from_str,
+    get_country_name,
     get_death_rate_from_string,
-    get_electricity_from_str
+    get_distance_from_str,
+    get_dollar_string,
+    get_electricity_from_str,
+    get_percentage_from_string,
 )
 
 
@@ -44,7 +44,9 @@ class CIAScraper:
                 ] = convert_str_to_float(gdp_str)
 
         return pd.DataFrame.from_dict(
-            purchasing_power_parity, orient="index", columns=["purchasing_power_parity"]
+            purchasing_power_parity,
+            orient="index",
+            columns=["purchasing_power_parity"],
         )
 
     @staticmethod
@@ -54,7 +56,9 @@ class CIAScraper:
         for row in table_rows:
             cells = row.find_all("td")
             if growth_prc := get_percentage_from_string(cells[1].get_text()):
-                growth_rates[get_country_name(cells[0].get_text())] = growth_prc
+                growth_rates[get_country_name(cells[0].get_text())] = (
+                    growth_prc
+                )
         return pd.DataFrame.from_dict(
             growth_rates, orient="index", columns=["growth"]
         )
@@ -66,7 +70,9 @@ class CIAScraper:
         for row in table_rows:
             cells = row.find_all("td")
             if age_structure := get_age_structures(cells[1].get_text()):
-                age_structures[get_country_name(cells[0].get_text())] = age_structure
+                age_structures[get_country_name(cells[0].get_text())] = (
+                    age_structure
+                )
         return pd.DataFrame.from_dict(age_structures, orient="index")
 
     @staticmethod
@@ -91,7 +97,9 @@ class CIAScraper:
             coastline = get_distance_from_str(cells[1].get_text())
             if coastline is not None:
                 coastlines[get_country_name(cells[0].get_text())] = coastline
-        return pd.DataFrame.from_dict(coastlines, orient="index", columns=["coastline"])
+        return pd.DataFrame.from_dict(
+            coastlines, orient="index", columns=["coastline"]
+        )
 
     @staticmethod
     def get_death_rate(soup: BeautifulSoup) -> pd.DataFrame:
@@ -103,24 +111,31 @@ class CIAScraper:
             cells = row.find_all("td")
             if death_rate := get_death_rate_from_string(cells[1].get_text()):
                 death_rates[get_country_name(cells[0].get_text())] = death_rate
-        return pd.DataFrame.from_dict(death_rates, orient="index", columns=["death_rate"])
+        return pd.DataFrame.from_dict(
+            death_rates, orient="index", columns=["death_rate"]
+        )
 
     @staticmethod
     def get_electrical_consumption(soup: BeautifulSoup):
-        table_rows = get_table_rows(soup, re.compile(r"((?:\d{1,3},?)+(?:\.\d+))\s(\w+)\skWh"))
+        table_rows = get_table_rows(
+            soup, re.compile(r"((?:\d{1,3},?)+(?:\.\d+))\s(\w+)\skWh")
+        )
         electricity_consumption = {}
         for row in table_rows:
             if row is None:
                 continue
             cells = row.find_all("td")
             if consumption := get_electricity_from_str(cells[1].get_text()):
-                electricity_consumption[get_country_name(cells[0].get_text())] = consumption
-        return pd.DataFrame.from_dict(electricity_consumption, orient="index", columns=["electricity_consumption"])
+                electricity_consumption[
+                    get_country_name(cells[0].get_text())
+                ] = consumption
+        return pd.DataFrame.from_dict(
+            electricity_consumption,
+            orient="index",
+            columns=["electricity_consumption"],
+        )
 
 
 def get_table_rows(soup: BeautifulSoup, pattern: re.Pattern):
-    table_rows = [
-        x.find_parent("tr")
-        for x in soup.find_all(string=pattern)
-    ]
+    table_rows = [x.find_parent("tr") for x in soup.find_all(string=pattern)]
     return table_rows

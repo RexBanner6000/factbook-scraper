@@ -1,11 +1,25 @@
-import pandas as pd
-from bs4 import BeautifulSoup
-import requests
 from typing import Callable, List
-from fbscraper.utils import get_country_name
-from fbscraper.field_scrapers import get_areas_from_web, get_coastline_from_web, get_terrain, get_border_countries, get_climate
 
-field_scrapers = [get_areas_from_web, get_coastline_from_web, get_terrain, get_border_countries, get_climate]
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+
+from fbscraper.field_scrapers import (
+    get_areas_from_web,
+    get_border_countries,
+    get_climate,
+    get_coastline_from_web,
+    get_terrain,
+)
+from fbscraper.utils import get_country_name
+
+field_scrapers = [
+    get_areas_from_web,
+    get_coastline_from_web,
+    get_terrain,
+    get_border_countries,
+    get_climate,
+]
 
 
 class CIAScraper:
@@ -42,7 +56,7 @@ class CIAScraper:
 if __name__ == "__main__":
     scraper = CIAScraper(
         countries_url="https://www.cia.gov/the-world-factbook/about/archives/2023/field/country-name/",
-        year=2024
+        year=2024,
     )
     scraper.get_country_codes()
     scraper.scrape_countries(field_scrapers)

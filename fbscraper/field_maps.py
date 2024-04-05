@@ -5,7 +5,7 @@ original_field_map = {
     "areas": 2147,
     "coastline": 2060,
     "death_rate": 2066,
-    "electricity_consumption": 2042
+    "electricity_consumption": 2042,
 }
 
 later_field_map = {
@@ -15,10 +15,10 @@ later_field_map = {
     "areas": 279,
     "coastline": 282,
     "death_rate": 346,
-    "electricity_consumption": 253
+    "electricity_consumption": 253,
 }
 
 web_field_map = {
     "purchasing_power_parity": "real-gdp-purchasing-power-parity",
-    "growth_rates": "population-growth-rate"
+    "growth_rates": "population-growth-rate",
 }
