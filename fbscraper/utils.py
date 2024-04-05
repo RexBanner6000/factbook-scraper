@@ -100,10 +100,14 @@ def get_boundary_countries_from_str(raw_str: str) -> Optional[List[str]]:
 
 def get_elevations_from_str(raw_str: str) -> Optional[dict[str, float]]:
     elevations = {}
-    elevation_labels = ["highest_elevation", "lowest_elevation", "mean_elvation"]
+    elevation_labels = [
+        "highest_elevation",
+        "lowest_elevation",
+        "mean_elvation",
+    ]
     if m := re.findall(r"((?:\d{1,3},?)+(?:\.\d+)?) m", raw_str):
         for i, elevation in enumerate(m):
-            if i > len(elevation_labels)-1:
+            if i > len(elevation_labels) - 1:
                 break
             elevations[elevation_labels[i]] = elevation.replace(",", "")
         return elevations

@@ -1,3 +1,4 @@
+import re
 from typing import Callable, List
 
 import pandas as pd
@@ -7,13 +8,12 @@ from bs4 import BeautifulSoup
 from fbscraper.field_scrapers import (
     get_areas_from_web,
     get_border_countries,
-    get_elevation,
     get_climate,
     get_coastline_from_web,
+    get_elevation,
     get_terrain,
 )
 from fbscraper.utils import get_country_name
-import re
 
 field_scrapers = [
     get_areas_from_web,
@@ -21,7 +21,7 @@ field_scrapers = [
     get_terrain,
     get_border_countries,
     get_climate,
-    get_elevation
+    get_elevation,
 ]
 
 
