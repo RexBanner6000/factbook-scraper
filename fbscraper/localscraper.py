@@ -45,6 +45,11 @@ class CIALocalScraper(CIAScraper):
             death_rate_df = self.get_death_rate(soup)
             factbook_df = factbook_df.join(death_rate_df, how="outer")
 
+        with open(self.base_url + f"fields/{self.field_maps['electricity_consumption']}.html", "r") as fp:
+            soup = BeautifulSoup(fp, "html.parser")
+            electricity_consumption_df = self.get_electrical_consumption(soup)
+            factbook_df = factbook_df.join(electricity_consumption_df, how="outer")
+
         return factbook_df
 
 

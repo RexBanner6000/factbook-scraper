@@ -10,7 +10,8 @@ from utils import (
     get_age_structures,
     get_areas_from_str,
     get_distance_from_str,
-    get_death_rate_from_string
+    get_death_rate_from_string,
+    get_electricity_from_str
 )
 
 
@@ -103,6 +104,18 @@ class CIAScraper:
             if death_rate := get_death_rate_from_string(cells[1].get_text()):
                 death_rates[get_country_name(cells[0].get_text())] = death_rate
         return pd.DataFrame.from_dict(death_rates, orient="index", columns=["death_rate"])
+
+    @staticmethod
+    def get_electrical_consumption(soup: BeautifulSoup):
+        table_rows = get_table_rows(soup, re.compile(r"((?:\d{1,3},?)+(?:\.\d+))\s(\w+)\skWh"))
+        electricity_consumption = {}
+        for row in table_rows:
+            if row is None:
+                continue
+            cells = row.find_all("td")
+            if consumption := get_electricity_from_str(cells[1].get_text()):
+                electricity_consumption[get_country_name(cells[0].get_text())] = consumption
+        return pd.DataFrame.from_dict(electricity_consumption, orient="index", columns=["electricity_consumption"])
 
 
 def get_table_rows(soup: BeautifulSoup, pattern: re.Pattern):

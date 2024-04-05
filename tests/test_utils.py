@@ -6,7 +6,8 @@ from fbscraper.utils import (
     get_percentage_from_string,
     get_country_name,
     get_distance_from_str,
-    get_death_rate_from_string
+    get_death_rate_from_string,
+    get_electricity_from_str
 )
 
 
@@ -43,3 +44,8 @@ def test_get_death_rate_from_string():
     assert get_death_rate_from_string("12.7 deaths per 1000") == 12.7
     assert get_death_rate_from_string("10 deaths per 1000") == 10
     assert get_death_rate_from_string("10 per 1000") is None
+
+
+def test_get_electricity_from_str():
+    assert get_electricity_from_str("Afghanistan	453.75 million kWh (2000)") == 453_750_000
+    assert get_electricity_from_str("5,205.4 kWh") == 5205.4
