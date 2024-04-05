@@ -6,7 +6,8 @@ from utils import (
     convert_str_to_float,
     get_dollar_string,
     get_percentage_from_string,
-    get_country_name
+    get_country_name,
+    get_age_structures
 )
 
 
@@ -59,3 +60,16 @@ class CIAScraper:
         return pd.DataFrame.from_dict(
             growth_rates, orient="index", columns=["growth"]
         )
+
+    @staticmethod
+    def get_age_structure(soup: BeautifulSoup) -> pd.DataFrame:
+        table_rows = [
+            x.find_parent("tr")
+            for x in soup.find_all(string=re.compile(r"\d%"))
+        ]
+        age_structures = {}
+        for row in table_rows:
+            cells = row.find_all("td")
+            if age_structure := get_age_structures(cells[1].get_text()):
+                age_structures[get_country_name(cells[0].get_text())] = age_structure
+        return pd.DataFrame.from_dict(age_structures, orient="index")

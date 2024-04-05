@@ -25,19 +25,23 @@ class CIALocalScraper(CIAScraper):
             purchasing_power_parity = self.get_purchasing_power_parity(soup)
             factbook_df = factbook_df.join(purchasing_power_parity, how="outer")
 
+        with open(self.base_url + f"fields/{self.field_maps['age_structures']}.html", "r") as fp:
+            soup = BeautifulSoup(fp, "html.parser")
+            age_structures = self.get_age_structure(soup)
+            factbook_df = factbook_df.join(age_structures, how="outer")
 
         return factbook_df
 
 
 if __name__ == "__main__":
-    scraper = CIALocalScraper(
-        base_url="./data/factbook-2002/",
-        field_maps=original_field_map,
-        year=2002
-    )
-    factbook_df = scraper.get_factbook_df()
-    print("Factbook 2002")
-    print(factbook_df.head())
+    # scraper = CIALocalScraper(
+    #     base_url="./data/factbook-2002/",
+    #     field_maps=original_field_map,
+    #     year=2002
+    # )
+    # factbook_df = scraper.get_factbook_df()
+    # print("Factbook 2002")
+    # print(factbook_df.head())
 
     scraper = CIALocalScraper(
         base_url="./data/factbook-2019/",

@@ -44,3 +44,13 @@ def get_field_types(fb_type: str = "local"):
         parent_type = None
         child_type = None
     return parent_type, child_type
+
+
+def get_age_structures(raw_str: str) -> Optional[dict[str, float]]:
+    pattern = re.compile(
+        r"(?:(\d{1,2}(?:-\d{1,2})?) years:?(?: and over:)?\s?(\d{1,2}(?:\.\d{1,2})?)%)"
+    )
+    if m := re.findall(pattern, raw_str):
+        age_structure = {x[0]: float(x[1])/100 for x in m}
+        return age_structure
+    return None
