@@ -17,18 +17,15 @@ class CIALocalScraper(CIAScraper):
 
         with open(self.base_url + f"fields/{self.field_maps['growth_rates']}.html", "r") as fp:
             soup = BeautifulSoup(fp, "html.parser")
-            growth = pd.DataFrame.from_dict(
-                self.get_population_growth_rate(soup), orient="index", columns=["growth"]
-            )
+            growth = self.get_population_growth_rate(soup)
             factbook_df = factbook_df.join(growth, how="outer")
 
         with open(self.base_url + f"fields/{self.field_maps['purchasing_power_parity']}.html", "r") as fp:
             soup = BeautifulSoup(fp, "html.parser")
-            purchasing_power_parity = pd.DataFrame.from_dict(
-                self.get_purchasing_power_parity(soup), orient="index", columns=["purchasing_power_parity"]
-            )
+            purchasing_power_parity = self.get_purchasing_power_parity(soup)
+            factbook_df = factbook_df.join(purchasing_power_parity, how="outer")
 
-        factbook_df = factbook_df.join(purchasing_power_parity, how="outer")
+
         return factbook_df
 
 
