@@ -3,9 +3,9 @@ from bs4 import BeautifulSoup
 import requests
 from typing import Callable, List
 from fbscraper.utils import get_country_name
-from fbscraper.field_scrapers import get_areas_from_web, get_coastline_from_web
+from fbscraper.field_scrapers import get_areas_from_web, get_coastline_from_web, get_terrain
 
-field_scrapers = [get_areas_from_web, get_coastline_from_web]
+field_scrapers = [get_areas_from_web, get_coastline_from_web, get_terrain]
 
 
 class CIAScraper:
@@ -29,6 +29,8 @@ class CIAScraper:
 
     def scrape_countries(self, field_scrapers: List[Callable]):
         for country, data in self.countries.items():
+            if "Argentina" in country:
+                break
             print(f"Scraping {country}...")
             soup = self.make_scraper(data["link"])
             for field_scraper in field_scrapers:
