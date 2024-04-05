@@ -30,10 +30,7 @@ class CIAScraper:
 
     @staticmethod
     def get_purchasing_power_parity(soup: BeautifulSoup) -> pd.DataFrame:
-        table_rows = [
-            x.find_parent("tr")
-            for x in soup.find_all(string=re.compile(r"\$"))
-        ]
+        table_rows = get_table_rows(soup, re.compile(r"\$"))
         purchasing_power_parity = {}
         for row in table_rows:
             if row is None:
@@ -50,10 +47,7 @@ class CIAScraper:
 
     @staticmethod
     def get_population_growth_rate(soup: BeautifulSoup) -> pd.DataFrame:
-        table_rows = [
-            x.find_parent("tr")
-            for x in soup.find_all(string=re.compile(r"\d%"))
-        ]
+        table_rows = get_table_rows(soup, re.compile(r"\d%"))
         growth_rates = {}
         for row in table_rows:
             cells = row.find_all("td")
@@ -65,10 +59,7 @@ class CIAScraper:
 
     @staticmethod
     def get_age_structure(soup: BeautifulSoup) -> pd.DataFrame:
-        table_rows = [
-            x.find_parent("tr")
-            for x in soup.find_all(string=re.compile(r"\d%"))
-        ]
+        table_rows = get_table_rows(soup, re.compile(r"\d%"))
         age_structures = {}
         for row in table_rows:
             cells = row.find_all("td")
@@ -78,10 +69,7 @@ class CIAScraper:
 
     @staticmethod
     def get_areas(soup: BeautifulSoup) -> pd.DataFrame:
-        table_rows = [
-            x.find_parent("tr")
-            for x in soup.find_all(string=re.compile(r"sq km"))
-        ]
+        table_rows = get_table_rows(soup, re.compile(r"sq km"))
         areas = {}
         for row in table_rows:
             cells = row.find_all("td")
@@ -92,10 +80,7 @@ class CIAScraper:
 
     @staticmethod
     def get_coastline(soup: BeautifulSoup) -> pd.DataFrame:
-        table_rows = [
-            x.find_parent("tr")
-            for x in soup.find_all(string=re.compile(r"km"))
-        ]
+        table_rows = get_table_rows(soup, re.compile(r"km"))
         coastlines = {}
         for row in table_rows:
             if row is None:
@@ -106,3 +91,11 @@ class CIAScraper:
                 coastlines[get_country_name(cells[0].get_text())] = coastline
 
         return pd.DataFrame.from_dict(coastlines, orient="index", columns=["coastline"])
+
+
+def get_table_rows(soup: BeautifulSoup, pattern: re.Pattern):
+    table_rows = [
+        x.find_parent("tr")
+        for x in soup.find_all(string=pattern)
+    ]
+    return table_rows
