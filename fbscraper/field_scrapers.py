@@ -163,3 +163,19 @@ def get_tobacco_use_total(soup: BeautifulSoup) -> Optional[dict]:
         tobacco_use = utils.get_percentages_from_str(para.get_text())
         return {"tobacco_use_ratio": tobacco_use["total"]}
     return None
+
+
+def get_obesity_rate(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Obesity - adult prevalence rate"):
+        return {
+            "obesity_rate": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
+
+
+def get_children_under_weight(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Children under the age of 5 years underweight"):
+        return {
+            "child_under_weight": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
