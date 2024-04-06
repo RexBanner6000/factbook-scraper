@@ -61,3 +61,9 @@ def get_population(soup: BeautifulSoup):
     if para := find_div_by_string(soup, "Population"):
         return {"population": utils.get_population_from_str(para.get_text())}
     return None
+
+
+def get_age_structures(soup: BeautifulSoup):
+    if para := find_div_by_string(soup, "Age structure"):
+        return utils.get_age_structures(para.get_text())
+    return None
