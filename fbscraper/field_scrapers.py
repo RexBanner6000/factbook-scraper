@@ -179,3 +179,17 @@ def get_children_under_weight(soup: BeautifulSoup) -> Optional[dict]:
             "child_under_weight": utils.get_percentage_from_string(para.get_text())
         }
     return None
+
+
+def get_education_expenditures(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Education expenditures"):
+        return {
+            "education_expenditure": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
+
+
+def get_literacy_rates(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Literacy"):
+        return utils.get_percentages_from_str(para.get_text(), suffix="_literacy")
+    return None

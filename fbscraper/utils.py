@@ -176,7 +176,7 @@ def get_infant_mortality_rates_from_str(raw_str: str) -> Optional[dict]:
     return None
 
 
-def get_percentages_from_str(raw_str: str) -> Optional[dict[str, float]]:
-    if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d{0,3})%", raw_str):
-        return {x[0]: float(x[1]) / 100 for x in m}
+def get_percentages_from_str(raw_str: str, suffix: str = "") -> Optional[dict[str, float]]:
+    if m := re.findall(r"(\w+):\s(\d{1,3}\.?\d{0,3})%", raw_str):
+        return {x[0] + suffix: float(x[1]) / 100 for x in m}
     return None
