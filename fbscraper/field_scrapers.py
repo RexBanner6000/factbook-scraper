@@ -123,3 +123,43 @@ def get_total_fertility_rate(soup: BeautifulSoup) -> Optional[dict]:
     if para := utils.find_div_by_string(soup, "Total fertility rate"):
         return {"fertility_rate": utils.get_rate_from_str(para.get_text(), search_term="children born")}
     return None
+
+
+def get_current_health_expenditure(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Current health expenditure"):
+        return {"health_expenditure": utils.get_percentage_from_string(para.get_text())}
+    return None
+
+
+def get_physicians_density(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Physicians density"):
+        return {
+            "physicians_density": utils.get_rate_from_str(
+                para.get_text(), search_term="physicians", denominator=1000
+            )
+        }
+    return None
+
+
+def get_hospital_bed_density(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Hospital bed density"):
+        return {
+            "hospital_bed_density": utils.get_rate_from_str(
+                para.get_text(), search_term="beds", denominator=1000
+            )
+        }
+    return None
+
+
+def get_total_alcohol_per_capita(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Alcohol consumption per capita"):
+        alcohol_consumption = utils.get_rates_from_str(para.get_text(), suffix="_litres_of_alcohol", denominator=1)
+        return {"alcohol_per_capita": alcohol_consumption["total_litres_of_alcohol"]}
+    return None
+
+
+def get_tobacco_use_total(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Tobacco use"):
+        tobacco_use = utils.get_percentages_from_str(para.get_text())
+        return {"tobacco_use_ratio": tobacco_use["total"]}
+    return None
