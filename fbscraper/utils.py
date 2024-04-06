@@ -64,9 +64,9 @@ def get_areas_from_str(raw_str: str) -> Optional[dict[str, float]]:
         areas = {}
         for match in m:
             if match[-1] == "":
-                areas[match[0]] = float(match[1].replace(",", ""))
+                areas[match[0] + "_area"] = float(match[1].replace(",", ""))
             else:
-                areas[match[0]] = convert_str_to_float(
+                areas[match[0] + "_area"] = convert_str_to_float(
                     f"{match[1]} {match[2]}"
                 )
         return areas
@@ -133,5 +133,5 @@ def get_dependency_ratios_from_str(raw_str: str) -> Optional[dict[str, float]]:
 
 def get_median_ages_from_str(raw_str: str) -> Optional[dict[str, float]]:
     if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d?) years", raw_str):
-        return {x[0]: float(x[1]) for x in m}
+        return {x[0] + "_median_age": float(x[1]) for x in m}
     return None
