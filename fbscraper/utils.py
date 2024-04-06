@@ -155,3 +155,9 @@ def find_div_by_string(soup: BeautifulSoup, div_name: str):
 def get_net_migration_from_str(raw_str: str) -> Optional[float]:
     if m := re.search(r"(-?\d{1,3}\.?\d?) migrant", raw_str):
         return float(m.group(1))
+
+
+def get_percentages_from_str(raw_str: str) -> Optional[dict[str, float]]:
+    if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d{0,3})%", raw_str):
+        return {x[0]: float(x[1]) / 100 for x in m}
+    return None
