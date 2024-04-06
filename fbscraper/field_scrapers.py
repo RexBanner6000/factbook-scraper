@@ -193,3 +193,9 @@ def get_literacy_rates(soup: BeautifulSoup) -> Optional[dict]:
     if para := utils.find_div_by_string(soup, "Literacy"):
         return utils.get_percentages_from_str(para.get_text(), suffix="_literacy")
     return None
+
+
+def get_air_pollutants(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Air pollutants"):
+        return utils.get_rates_from_str(para.get_text(), denominator=1)
+    return None
