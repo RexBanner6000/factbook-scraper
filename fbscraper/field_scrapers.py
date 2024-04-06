@@ -48,3 +48,10 @@ def get_border_countries(soup: BeautifulSoup):
 def get_elevation(soup: BeautifulSoup):
     if para := find_div_by_string(soup, "Elevation"):
         return utils.get_elevations_from_str(para.get_text())
+    return None
+
+
+def get_irrigated_land(soup: BeautifulSoup):
+    if para := find_div_by_string(soup, "Irrigated land"):
+        return {"irrigated_land": utils.get_area_from_str(para.get_text())}
+    return None

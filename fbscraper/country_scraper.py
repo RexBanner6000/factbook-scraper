@@ -12,6 +12,7 @@ from fbscraper.field_scrapers import (
     get_coastline_from_web,
     get_elevation,
     get_terrain,
+    get_irrigated_land
 )
 from fbscraper.utils import get_country_name
 
@@ -22,6 +23,7 @@ field_scrapers = [
     get_border_countries,
     get_climate,
     get_elevation,
+    get_irrigated_land
 ]
 
 

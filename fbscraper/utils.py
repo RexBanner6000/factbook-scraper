@@ -112,3 +112,9 @@ def get_elevations_from_str(raw_str: str) -> Optional[dict[str, float]]:
             elevations[elevation_labels[i]] = elevation.replace(",", "")
         return elevations
     return None
+
+
+def get_area_from_str(raw_str: str) -> Optional[float]:
+    if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+)?) sq km", raw_str):
+        return float(m.group(1).replace(",", ""))
+    return None
