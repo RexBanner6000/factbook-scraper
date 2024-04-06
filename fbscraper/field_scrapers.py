@@ -199,3 +199,29 @@ def get_air_pollutants(soup: BeautifulSoup) -> Optional[dict]:
     if para := utils.find_div_by_string(soup, "Air pollutants"):
         return utils.get_rates_from_str(para.get_text(), denominator=1)
     return None
+
+
+def get_real_gdp(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Real GDP (purchasing power parity)"):
+        return {
+            "real_gdp": utils.convert_str_to_float(
+                utils.get_dollar_string(para.get_text())
+            )
+        }
+    return None
+
+
+def get_gdp_growth_rate(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Real GDP growth rate"):
+        return {
+            "gdp_growth": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
+
+
+def get_inflation_rate(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Inflation rate (consumer prices)"):
+        return {
+            "inflation_rate": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
