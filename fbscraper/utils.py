@@ -22,7 +22,7 @@ def convert_str_to_float(number_str: str) -> float:
 
 
 def get_percentage_from_string(raw_str: str) -> Optional[float]:
-    if m := re.search(r"(\d+(?:\.\d+)?)%", raw_str):
+    if m := re.search(r"(-?\d+(?:\.\d+)?)%", raw_str):
         return float(m.group(1)) / 100
     return None
 

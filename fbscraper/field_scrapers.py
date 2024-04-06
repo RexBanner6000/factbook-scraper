@@ -79,3 +79,9 @@ def get_median_ages(soup: BeautifulSoup):
     if para := find_div_by_string(soup, "Median age"):
         return utils.get_median_ages_from_str(para.get_text())
     return None
+
+
+def get_population_growth_rate(soup: BeautifulSoup) -> dict:
+    if para := find_div_by_string(soup, "Population growth rate"):
+        return {"population_growth_rate": utils.get_percentage_from_string(para.get_text())}
+    return None
