@@ -23,9 +23,9 @@ class CIAScraper:
         r = requests.get(url)
         return BeautifulSoup(r.content, "html.parser")
 
-    def get_country_codes(self):
+    def get_country_codes(self, tag: str = "h3", class_: str = "mt10"):
         soup = self.make_scraper(self.countries_url)
-        links = soup.find_all("h3", class_="mt10")
+        links = soup.find_all(tag, class_=class_)
         for tag in links:
             if re.search(r"\sOcean\s?", tag.text):
                 continue
@@ -35,7 +35,7 @@ class CIAScraper:
 
     def scrape_countries(self, field_scrapers: List[Callable]):
         for country, data in self.countries.items():
-            if "Argentina" in country:
+            if "American Samoa" in country:
                 break
             print(f"Scraping {country}...")
             soup = self.make_scraper(data["link"])
@@ -52,5 +52,14 @@ if __name__ == "__main__":
     )
     scraper.get_country_codes()
     scraper.scrape_countries(field_scrapers)
-    factbook_df = pd.DataFrame.from_dict(scraper.countries, orient="index")
-    print(factbook_df.head())
+    factbook_2024_df = pd.DataFrame.from_dict(scraper.countries, orient="index")
+    print(factbook_2024_df.head())
+
+    scraper = CIAScraper(
+        countries_url="https://www.cia.gov/the-world-factbook/about/archives/2021/field/country-name/",
+        year=2021,
+    )
+    scraper.get_country_codes(tag="h2", class_="h3")
+    scraper.scrape_countries(field_scrapers)
+    factbook_2021_df = pd.DataFrame.from_dict(scraper.countries, orient="index")
+    print(factbook_2021_df.head())

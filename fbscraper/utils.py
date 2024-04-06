@@ -165,7 +165,7 @@ def get_net_migration_from_str(raw_str: str) -> Optional[float]:
 
 
 def get_rates_from_str(raw_str: str, suffix: str = "", denominator: int = 1000) -> Optional[dict]:
-    if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d?)", raw_str):
+    if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}(?:\.\d+)?)", raw_str):
         return {x[0] + suffix: float(x[1]) / denominator for x in m}
     return None
 
