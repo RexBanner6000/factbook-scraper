@@ -73,3 +73,9 @@ def get_dependency_ratios(soup: BeautifulSoup):
     if para := find_div_by_string(soup, "Dependency ratios"):
         return utils.get_dependency_ratios_from_str(para.get_text())
     return None
+
+
+def get_median_ages(soup: BeautifulSoup):
+    if para := find_div_by_string(soup, "Median age"):
+        return utils.get_median_ages_from_str(para.get_text())
+    return None

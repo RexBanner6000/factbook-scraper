@@ -129,3 +129,9 @@ def get_dependency_ratios_from_str(raw_str: str) -> Optional[dict[str, float]]:
     if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d?)", raw_str):
         return {x[0]: float(x[1]) / 100 for x in m}
     return None
+
+
+def get_median_ages_from_str(raw_str: str) -> Optional[dict[str, float]]:
+    if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d?) years", raw_str):
+        return {x[0]: float(x[1]) for x in m}
+    return None

@@ -15,7 +15,8 @@ from fbscraper.field_scrapers import (
     get_irrigated_land,
     get_population,
     get_age_structures,
-    get_dependency_ratios
+    get_dependency_ratios,
+    get_median_ages
 )
 from fbscraper.utils import get_country_name
 
@@ -29,7 +30,8 @@ field_scrapers = [
     get_irrigated_land,
     get_population,
     get_age_structures,
-    get_dependency_ratios
+    get_dependency_ratios,
+    get_median_ages
 ]
 
 
