@@ -90,3 +90,8 @@ def get_death_rate(soup: BeautifulSoup) -> Optional[dict]:
     if para := utils.find_div_by_string(soup, "Death rate"):
         return {"death_rate": utils.get_death_rate_from_string(para.get_text())}
     return None
+
+
+def get_net_migration_rate(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Net migration rate"):
+        return {"net_migration": utils.get_net_migration_from_str(para.get_text())}

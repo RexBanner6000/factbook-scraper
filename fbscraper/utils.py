@@ -150,3 +150,8 @@ def find_div_by_string(soup: BeautifulSoup, div_name: str):
         return None
     tag = tag.find_parent("div")
     return tag.find("p")
+
+
+def get_net_migration_from_str(raw_str: str) -> Optional[float]:
+    if m := re.search(r"(-?\d{1,3}\.?\d?) migrant", raw_str):
+        return float(m.group(1))
