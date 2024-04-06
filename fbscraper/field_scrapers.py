@@ -117,3 +117,9 @@ def get_life_expectancy_at_birth(soup: BeautifulSoup) -> Optional[dict]:
             life_expectancies[key.replace("years", "")] = life_expectancies.pop(key)
         return life_expectancies
     return None
+
+
+def get_total_fertility_rate(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Total fertility rate"):
+        return {"fertility_rate": utils.get_rate_from_str(para.get_text(), search_term="children born")}
+    return None

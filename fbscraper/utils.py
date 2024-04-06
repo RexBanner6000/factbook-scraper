@@ -85,6 +85,13 @@ def get_death_rate_from_string(raw_str: str) -> Optional[float]:
     return None
 
 
+def get_rate_from_str(raw_str: str, search_term: str, denominator: int = 1) -> Optional[float]:
+    pattern = re.compile(rf"(\d{{1,3}}(?:\.\d+)?) {search_term}")
+    if m := re.search(pattern, raw_str):
+        return float(m.group(1)) / denominator
+    return None
+
+
 def get_electricity_from_str(raw_str: str) -> Optional[float]:
     if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+))\s(\w+)\skWh", raw_str):
         return convert_str_to_float(
