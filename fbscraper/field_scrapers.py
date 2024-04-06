@@ -67,3 +67,9 @@ def get_age_structures(soup: BeautifulSoup):
     if para := find_div_by_string(soup, "Age structure"):
         return utils.get_age_structures(para.get_text())
     return None
+
+
+def get_dependency_ratios(soup: BeautifulSoup):
+    if para := find_div_by_string(soup, "Dependency ratios"):
+        return utils.get_dependency_ratios_from_str(para.get_text())
+    return None

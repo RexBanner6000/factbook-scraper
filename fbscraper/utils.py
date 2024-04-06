@@ -123,3 +123,9 @@ def get_area_from_str(raw_str: str) -> Optional[float]:
 def get_population_from_str(raw_str: str) -> Optional[float]:
     if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+)?)", raw_str):
         return int(m.group(1).replace(",", ""))
+
+
+def get_dependency_ratios_from_str(raw_str: str) -> Optional[dict[str, float]]:
+    if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d?)", raw_str):
+        return {x[0]: float(x[1]) / 100 for x in m}
+    return None
