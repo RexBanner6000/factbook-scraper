@@ -1,5 +1,6 @@
 import re
 from typing import List, Optional
+from bs4 import BeautifulSoup
 
 
 def get_dollar_string(raw_str: str) -> Optional[str]:
@@ -141,3 +142,11 @@ def get_births_from_str(raw_str: str) -> Optional[float]:
     if m := re.search(r"(\d{1,3}\.?\d?) births", raw_str):
         return float(m.group(1)) / 1000
     return None
+
+
+def find_div_by_string(soup: BeautifulSoup, div_name: str):
+    tag = soup.find("h3", class_="mt30", string=div_name)
+    if tag is None:
+        return None
+    tag = tag.find_parent("div")
+    return tag.find("p")

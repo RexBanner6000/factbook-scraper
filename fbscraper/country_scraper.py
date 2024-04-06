@@ -4,39 +4,12 @@ from typing import Callable, List
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-
-from fbscraper.field_scrapers import (
-    get_age_structures,
-    get_areas_from_web,
-    get_border_countries,
-    get_climate,
-    get_coastline_from_web,
-    get_dependency_ratios,
-    get_elevation,
-    get_irrigated_land,
-    get_median_ages,
-    get_population,
-    get_terrain,
-    get_population_growth_rate,
-    get_birth_rate
-)
+from inspect import getmembers, isfunction
+from fbscraper import field_scrapers
 from fbscraper.utils import get_country_name
 
-field_scrapers = [
-    get_areas_from_web,
-    get_coastline_from_web,
-    get_terrain,
-    get_border_countries,
-    get_climate,
-    get_elevation,
-    get_irrigated_land,
-    get_population,
-    get_age_structures,
-    get_dependency_ratios,
-    get_median_ages,
-    get_population_growth_rate,
-    get_birth_rate
-]
+
+field_scrapers = [x[1]for x in getmembers(field_scrapers, isfunction)]
 
 
 class CIAScraper:
