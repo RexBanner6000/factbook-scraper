@@ -118,3 +118,8 @@ def get_area_from_str(raw_str: str) -> Optional[float]:
     if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+)?) sq km", raw_str):
         return float(m.group(1).replace(",", ""))
     return None
+
+
+def get_population_from_str(raw_str: str) -> Optional[float]:
+    if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+)?)", raw_str):
+        return int(m.group(1).replace(",", ""))

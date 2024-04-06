@@ -12,7 +12,8 @@ from fbscraper.field_scrapers import (
     get_coastline_from_web,
     get_elevation,
     get_terrain,
-    get_irrigated_land
+    get_irrigated_land,
+    get_population
 )
 from fbscraper.utils import get_country_name
 
@@ -23,7 +24,8 @@ field_scrapers = [
     get_border_countries,
     get_climate,
     get_elevation,
-    get_irrigated_land
+    get_irrigated_land,
+    get_population
 ]
 
 
@@ -62,7 +64,7 @@ class CIAScraper:
 
 if __name__ == "__main__":
     scraper = CIAScraper(
-        countries_url="https://www.cia.gov/the-world-factbook/about/archives/2023/field/country-name/",
+        countries_url="https://www.cia.gov/the-world-factbook/field/country-name/",
         year=2024,
     )
     scraper.get_country_codes()

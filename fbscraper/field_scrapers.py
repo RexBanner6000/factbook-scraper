@@ -55,3 +55,9 @@ def get_irrigated_land(soup: BeautifulSoup):
     if para := find_div_by_string(soup, "Irrigated land"):
         return {"irrigated_land": utils.get_area_from_str(para.get_text())}
     return None
+
+
+def get_population(soup: BeautifulSoup):
+    if para := find_div_by_string(soup, "Population"):
+        return {"population": utils.get_population_from_str(para.get_text())}
+    return None
