@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 
 from fbscraper import utils
+from typing import Optional
 
 
 def find_div_by_string(soup: BeautifulSoup, div_name: str):
@@ -81,7 +82,13 @@ def get_median_ages(soup: BeautifulSoup):
     return None
 
 
-def get_population_growth_rate(soup: BeautifulSoup) -> dict:
+def get_population_growth_rate(soup: BeautifulSoup) -> Optional[dict]:
     if para := find_div_by_string(soup, "Population growth rate"):
         return {"population_growth_rate": utils.get_percentage_from_string(para.get_text())}
+    return None
+
+
+def get_birth_rate(soup: BeautifulSoup) -> Optional[dict]:
+    if para := find_div_by_string(soup, "Birth rate"):
+        return {"birth_rate": utils.get_births_from_str(para.get_text())}
     return None

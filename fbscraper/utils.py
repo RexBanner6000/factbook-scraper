@@ -80,7 +80,7 @@ def get_distance_from_str(raw_str: str) -> Optional[float]:
 
 def get_death_rate_from_string(raw_str: str) -> Optional[float]:
     if m := re.search(r"(\d{1,3}(?:\.\d+)?) deaths", raw_str):
-        return float(m.group(1))
+        return float(m.group(1)) / 1000
     return None
 
 
@@ -134,4 +134,10 @@ def get_dependency_ratios_from_str(raw_str: str) -> Optional[dict[str, float]]:
 def get_median_ages_from_str(raw_str: str) -> Optional[dict[str, float]]:
     if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d?) years", raw_str):
         return {x[0] + "_median_age": float(x[1]) for x in m}
+    return None
+
+
+def get_births_from_str(raw_str: str) -> Optional[float]:
+    if m := re.search(r"(\d{1,3}\.?\d?) births", raw_str):
+        return float(m.group(1)) / 1000
     return None

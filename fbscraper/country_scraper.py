@@ -17,7 +17,8 @@ from fbscraper.field_scrapers import (
     get_median_ages,
     get_population,
     get_terrain,
-    get_population_growth_rate
+    get_population_growth_rate,
+    get_birth_rate
 )
 from fbscraper.utils import get_country_name
 
@@ -33,7 +34,8 @@ field_scrapers = [
     get_age_structures,
     get_dependency_ratios,
     get_median_ages,
-    get_population_growth_rate
+    get_population_growth_rate,
+    get_birth_rate
 ]
 
 
