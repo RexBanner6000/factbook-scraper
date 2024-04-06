@@ -102,3 +102,9 @@ def get_urbanisation(soup: BeautifulSoup) -> Optional[dict]:
     if para := utils.find_div_by_string(soup, "Urbanization"):
         return utils.get_percentages_from_str(para.get_text())
     return None
+
+
+def get_infant_mortality(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Infant mortality rate"):
+        return utils.get_infant_mortality_rates_from_str(para.get_text())
+    return None

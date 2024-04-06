@@ -126,9 +126,9 @@ def get_population_from_str(raw_str: str) -> Optional[float]:
         return int(m.group(1).replace(",", ""))
 
 
-def get_dependency_ratios_from_str(raw_str: str) -> Optional[dict[str, float]]:
+def get_dependency_ratios_from_str(raw_str: str, suffix: str = "", denominator: int = 100) -> Optional[dict[str, float]]:
     if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d?)", raw_str):
-        return {x[0]: float(x[1]) / 100 for x in m}
+        return {x[0] + suffix: float(x[1]) / denominator for x in m}
     return None
 
 
@@ -156,6 +156,17 @@ def get_net_migration_from_str(raw_str: str) -> Optional[float]:
     if m := re.search(r"(-?\d{1,3}\.?\d?) migrant", raw_str):
         return float(m.group(1))
 
+
+def get_rates_from_str(raw_str: str, suffix: str = "", denominator: int = 1000) -> Optional[dict]:
+    if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d?)", raw_str):
+        return {x[0] + suffix: float(x[1]) / denominator for x in m}
+    return None
+
+
+def get_infant_mortality_rates_from_str(raw_str: str) -> Optional[dict]:
+    if m := re.findall(r"(\w[\w\s]+):\s(\d{1,3}\.?\d{0,3}) deaths/1,000 live births", raw_str):
+        return {x[0] + "_infant_mortality": float(x[1]) / 1000 for x in m}
+    return None
 
 def get_percentages_from_str(raw_str: str) -> Optional[dict[str, float]]:
     if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}\.?\d{0,3})%", raw_str):
