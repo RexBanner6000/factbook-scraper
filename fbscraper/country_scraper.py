@@ -6,17 +6,17 @@ import requests
 from bs4 import BeautifulSoup
 
 from fbscraper.field_scrapers import (
+    get_age_structures,
     get_areas_from_web,
     get_border_countries,
     get_climate,
     get_coastline_from_web,
-    get_elevation,
-    get_terrain,
-    get_irrigated_land,
-    get_population,
-    get_age_structures,
     get_dependency_ratios,
-    get_median_ages
+    get_elevation,
+    get_irrigated_land,
+    get_median_ages,
+    get_population,
+    get_terrain,
 )
 from fbscraper.utils import get_country_name
 
@@ -31,7 +31,7 @@ field_scrapers = [
     get_population,
     get_age_structures,
     get_dependency_ratios,
-    get_median_ages
+    get_median_ages,
 ]
 
 
