@@ -247,3 +247,20 @@ def get_unemployment_rate(soup: BeautifulSoup) -> Optional[dict]:
             "unemployment_rate": utils.get_percentage_from_string(para.get_text())
         }
     return None
+
+
+def get_percentage_in_poverty(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Population below poverty line"):
+        return {
+            "poverty_rate": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
+
+
+def get_electricity_access(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Electricity access"):
+        electricity_access = utils.get_percentages_from_str(para.get_text(), suffix="_electricity_access")
+        return {
+            "electricity_access": electricity_access["population_electricity_access"]
+        }
+    return None
