@@ -225,3 +225,25 @@ def get_inflation_rate(soup: BeautifulSoup) -> Optional[dict]:
             "inflation_rate": utils.get_percentage_from_string(para.get_text())
         }
     return None
+
+
+def get_gdp_composition(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "GDP - composition, by sector of origin"):
+        return utils.get_percentages_from_str(para.get_text(), suffix="_prc_gdp")
+    return None
+
+
+def get_industrial_production_growth_rate(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Industrial production growth rate"):
+        return {
+            "industrial_production_growth": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
+
+
+def get_unemployment_rate(soup: BeautifulSoup) -> Optional[dict]:
+    if para := utils.find_div_by_string(soup, "Unemployment rate"):
+        return {
+            "unemployment_rate": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
