@@ -56,6 +56,7 @@ def get_population(soup: BeautifulSoup):
     return None
 
 
+#TODO: 2023 and 2024 not picking up 15-64 group
 def get_age_structures(soup: BeautifulSoup):
     if para := utils.find_div_by_string(soup, "Age structure"):
         return utils.get_age_structures(para.get_text())
@@ -204,9 +205,7 @@ def get_air_pollutants(soup: BeautifulSoup) -> Optional[dict]:
 def get_real_gdp(soup: BeautifulSoup) -> Optional[dict]:
     if para := utils.find_div_by_string(soup, "Real GDP (purchasing power parity)"):
         return {
-            "real_gdp": utils.convert_str_to_float(
-                utils.get_dollar_string(para.get_text())
-            )
+            "real_gdp": utils.get_dollar_string(para.get_text())
         }
     return None
 

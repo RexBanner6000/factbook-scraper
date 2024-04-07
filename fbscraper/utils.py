@@ -3,9 +3,12 @@ from typing import List, Optional
 from bs4 import BeautifulSoup
 
 
-def get_dollar_string(raw_str: str) -> Optional[str]:
-    if m := re.search(r"(?:\$(\d+(?:\.\d+)? \w+))", raw_str):
-        return m.group(1)
+def get_dollar_string(raw_str: str) -> Optional[float]:
+    if m := re.search(r"\$((?:\d{1,3},?)+(?:\.\d+)?)\s?(\w+)?", raw_str):
+        if m.group(2) is None:
+            return float(m.group(1).replace(",", ""))
+        else:
+            return convert_str_to_float(m.group(1) + " " + m.group(2))
     return None
 
 

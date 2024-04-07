@@ -12,9 +12,10 @@ from fbscraper.utils import (
 
 
 def test_get_dollar_string():
-    assert get_dollar_string("$31 billion") == "31 billion"
+    assert get_dollar_string("$31 billion") == 31_000_000_000
     assert get_dollar_string("£10 million") is None
-    assert get_dollar_string("$23.5 million") == "23.5 million"
+    assert get_dollar_string("$23.5 million") == 23_500_000
+    assert get_dollar_string("$1,234,567") == 1_234_567
 
 
 def test_convert_string_to_float():

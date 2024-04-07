@@ -30,13 +30,12 @@ class CIAScraper:
             if re.search(r"\sOcean\s?", tag.text):
                 continue
             self.countries[get_country_name(tag.text)] = {
-                "link": "https://www.cia.gov" + tag.a["href"]
+                "link": "https://www.cia.gov" + tag.a["href"],
+                "year": self.year
             }
 
     def scrape_countries(self, field_scrapers: List[Callable]):
         for country, data in self.countries.items():
-            if "American Samoa" in country:
-                break
             print(f"Scraping {country}...")
             soup = self.make_scraper(data["link"])
             for field_scraper in field_scrapers:
