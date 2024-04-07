@@ -113,10 +113,13 @@ def get_infant_mortality(soup: BeautifulSoup) -> Optional[dict]:
 
 def get_life_expectancy_at_birth(soup: BeautifulSoup) -> Optional[dict]:
     if para := utils.find_div_by_string(soup, "Life expectancy at birth"):
-        life_expectancies = utils.get_rates_from_str(para.get_text(), suffix="_life_expectancy", denominator=1)
-        for key in life_expectancies.keys():
-            life_expectancies[key.replace("years", "")] = life_expectancies.pop(key)
-        return life_expectancies
+        if life_expectancies := utils.get_rates_from_str(
+                para.get_text(), suffix="_life_expectancy", denominator=1
+        ):
+            keys = [x for x in life_expectancies.keys()]
+            for key in keys:
+                life_expectancies[key.replace("years", "")] = life_expectancies.pop(key)
+            return life_expectancies
     return None
 
 

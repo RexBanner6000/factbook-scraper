@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 def get_dollar_string(raw_str: str) -> Optional[float]:
     if m := re.search(r"\$((?:\d{1,3},?)+(?:\.\d+)?)\s?(\w+)?", raw_str):
-        if m.group(2) is None:
+        if m.group(2) is None or m.group(2) == "note":
             return float(m.group(1).replace(",", ""))
         else:
             return convert_str_to_float(m.group(1) + " " + m.group(2))
@@ -95,14 +95,6 @@ def get_rate_from_str(raw_str: str, search_term: str, denominator: int = 1) -> O
     return None
 
 
-def get_electricity_from_str(raw_str: str) -> Optional[float]:
-    if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+))\s(\w+)\skWh", raw_str):
-        return convert_str_to_float(
-            f"{m.group(1).replace(',', '')} {m.group(2)}"
-        )
-    return None
-
-
 def get_boundary_countries_from_str(raw_str: str) -> Optional[List[str]]:
     if m := re.findall(r"(\w[\w ]+) (?:(?:\d{1,3},?)+(?:\.\d+)?) km", raw_str):
         return m
@@ -132,8 +124,12 @@ def get_area_from_str(raw_str: str) -> Optional[float]:
 
 
 def get_population_from_str(raw_str: str) -> Optional[float]:
-    if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+)?)", raw_str):
-        return int(m.group(1).replace(",", ""))
+    if m := re.search(r"^((?:\d{1,3},?)+(?:\.\d+)?)(\s\w+)?", raw_str):
+        if m.group(2) is None:
+            return int(m.group(1).replace(",", ""))
+        else:
+            return convert_str_to_float(m.group(1) + " " + m.group(2).replace(" ", ""))
+    return None
 
 
 def get_dependency_ratios_from_str(raw_str: str, suffix: str = "", denominator: int = 100) -> Optional[dict[str, float]]:
