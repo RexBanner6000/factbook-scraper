@@ -51,10 +51,9 @@ class CIAScraper:
 
 if __name__ == "__main__":
     scraper = CIAScraper(
-        countries_url="https://www.cia.gov/the-world-factbook/about/archives/2021/field/country-name/",
-        year=2021,
+        countries_url="https://www.cia.gov/the-world-factbook/about/archives/2023/field/country-name/",
+        year=2023,
     )
-    print("Scraping 2021...")
-    scraper.get_country_codes(tag="h2", class_="h3")
-    new_field = scraper.scrape_country_for_field("Guam", web_scrapers.get_gdp_composition)
+    scraper.get_country_codes(tag="h3", class_="mt10")
+    new_field = scraper.scrape_country_for_field("Falkland Islands", web_scrapers.get_life_expectancy_at_birth)
     print(new_field)
