@@ -5,11 +5,11 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from inspect import getmembers, isfunction
-from fbscraper import field_scrapers
+from fbscraper import web_scrapers
 from fbscraper.utils import get_country_name
 
 
-field_scrapers = [x[1]for x in getmembers(field_scrapers, isfunction)]
+field_scrapers = [x[1]for x in getmembers(web_scrapers, isfunction)]
 
 
 class CIAScraper:
@@ -43,22 +43,18 @@ class CIAScraper:
                 if new_fields is not None:
                     data.update(new_fields)
 
+    def scrape_country_for_field(self, country_name: str, field_scraper: Callable):
+        data = self.countries[country_name]
+        soup = self.make_scraper(data["link"])
+        return field_scraper(soup)
+
 
 if __name__ == "__main__":
-    scraper = CIAScraper(
-        countries_url="https://www.cia.gov/the-world-factbook/field/country-name/",
-        year=2024,
-    )
-    scraper.get_country_codes()
-    scraper.scrape_countries(field_scrapers)
-    factbook_2024_df = pd.DataFrame.from_dict(scraper.countries, orient="index")
-    print(factbook_2024_df.head())
-
     scraper = CIAScraper(
         countries_url="https://www.cia.gov/the-world-factbook/about/archives/2021/field/country-name/",
         year=2021,
     )
+    print("Scraping 2021...")
     scraper.get_country_codes(tag="h2", class_="h3")
-    scraper.scrape_countries(field_scrapers)
-    factbook_2021_df = pd.DataFrame.from_dict(scraper.countries, orient="index")
-    print(factbook_2021_df.head())
+    new_field = scraper.scrape_country_for_field("Guam", web_scrapers.get_gdp_composition)
+    print(new_field)

@@ -1,6 +1,7 @@
 import re
 from typing import List, Optional
 from bs4 import BeautifulSoup
+import numpy as np
 
 
 def get_dollar_string(raw_str: str) -> Optional[float]:
@@ -163,6 +164,7 @@ def get_net_migration_from_str(raw_str: str) -> Optional[float]:
         return float(m.group(1))
 
 
+#TODO: Make sure this doesnt pick up NA in field names
 def get_rates_from_str(raw_str: str, suffix: str = "", denominator: int = 1000) -> Optional[dict]:
     if m := re.findall(r"(\w[\w ]+):\s(\d{1,3}(?:\.\d+)?)", raw_str):
         return {x[0] + suffix: float(x[1]) / denominator for x in m}
@@ -176,6 +178,12 @@ def get_infant_mortality_rates_from_str(raw_str: str) -> Optional[dict]:
 
 
 def get_percentages_from_str(raw_str: str, suffix: str = "") -> Optional[dict[str, float]]:
-    if m := re.findall(r"(\w+):\s(\d{1,3}\.?\d{0,3})%", raw_str):
-        return {x[0] + suffix: float(x[1]) / 100 for x in m}
+    if m := re.findall(r"(\w+):\s(\d{1,3}\.?\d{0,3}|NA)%?", raw_str):
+        percentages = {}
+        for match in m:
+            if match[1] == "NA":
+                percentages[match[0] + suffix] = np.nan
+            else:
+                percentages[match[0] + suffix] = float(match[1]) / 100
+        return percentages
     return None
