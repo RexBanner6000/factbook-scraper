@@ -49,11 +49,37 @@ class CIAScraper:
         return field_scraper(soup)
 
 
+class CIAArchiveScraper:
+    def __init__(self, countries_path: str, year: int):
+        self.countries_path = countries_path
+        self.countries = {}
+        self.year = year
+
+    def get_country_codes(self):
+        with open(self.countries_path) as fp:
+            soup = BeautifulSoup(fp, 'html.parser')
+        links = soup.find_all("td", class_="country")
+        for tag in links:
+            if re.search(r"\sOcean\s?", tag.text):
+                continue
+            self.countries[get_country_name(tag.text)] = {
+                "country_code": tag.a["href"][8:10],
+                "year": self.year
+            }
+
+
 if __name__ == "__main__":
-    scraper = CIAScraper(
-        countries_url="https://www.cia.gov/the-world-factbook/about/archives/2023/field/country-name/",
-        year=2023,
+    # scraper = CIAScraper(
+    #     countries_url="https://www.cia.gov/the-world-factbook/about/archives/2023/field/country-name/",
+    #     year=2023,
+    # )
+    # scraper.get_country_codes(tag="h3", class_="mt10")
+    # new_field = scraper.scrape_country_for_field("Falkland Islands", web_scrapers.get_life_expectancy_at_birth)
+    # print(new_field)
+
+    scraper = CIAArchiveScraper(
+        countries_path="S:/datasets/cia-world-factbook/factbook-2020/fields/296.html",
+        year=2020
     )
-    scraper.get_country_codes(tag="h3", class_="mt10")
-    new_field = scraper.scrape_country_for_field("Falkland Islands", web_scrapers.get_life_expectancy_at_birth)
-    print(new_field)
+    scraper.get_country_codes()
+    print("Done!")
