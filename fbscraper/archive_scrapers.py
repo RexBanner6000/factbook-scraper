@@ -22,3 +22,19 @@ def get_coastline_from_archive(soup: BeautifulSoup):
             coastline_length = utils.get_distance_from_str(value.get_text())
         return {"coastline": coastline_length}
     return None
+
+
+def get_terrain(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-terrain"):
+        return {
+            "terrain": para.find("div", class_="category_data subfield text").get_text().strip()
+        }
+    return None
+
+
+def get_climate(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-climate"):
+        return {
+            "climate": para.find("div", class_="category_data subfield text").get_text().strip()
+        }
+    return None
