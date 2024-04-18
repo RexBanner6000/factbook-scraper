@@ -38,3 +38,15 @@ def get_climate(soup: BeautifulSoup):
             "climate": para.find("div", class_="category_data subfield text").get_text().strip()
         }
     return None
+
+
+def get_border_countries(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-land-boundaries"):
+        if border_countries_subfield := para.find("div", class_="category_data subfield text"):
+            border_countries_str = border_countries_subfield.get_text()
+            return {
+                "border_countries": utils.get_boundary_countries_from_str(
+                    border_countries_str
+                )
+            }
+    return None
