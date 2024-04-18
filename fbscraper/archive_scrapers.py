@@ -67,3 +67,10 @@ def get_irrigated_land_from_archive(soup: BeautifulSoup):
         if value := para.find("span", "subfield-number"):
             return {"irrigated_land": utils.get_area_from_str(value.get_text())}
     return None
+
+
+def get_population_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-population"):
+        if value := para.find("span", "subfield-number"):
+            return {"population": float(value.get_text().replace(",", ""))}
+    return None
