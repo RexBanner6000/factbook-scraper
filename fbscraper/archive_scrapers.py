@@ -24,7 +24,7 @@ def get_coastline_from_archive(soup: BeautifulSoup):
     return None
 
 
-def get_terrain(soup: BeautifulSoup):
+def get_terrain_from_archive(soup: BeautifulSoup):
     if para := utils.find_div_by_id(soup, "field-terrain"):
         return {
             "terrain": para.find("div", class_="category_data subfield text").get_text().strip()
@@ -32,7 +32,7 @@ def get_terrain(soup: BeautifulSoup):
     return None
 
 
-def get_climate(soup: BeautifulSoup):
+def get_climate_from_archive(soup: BeautifulSoup):
     if para := utils.find_div_by_id(soup, "field-climate"):
         return {
             "climate": para.find("div", class_="category_data subfield text").get_text().strip()
@@ -40,7 +40,7 @@ def get_climate(soup: BeautifulSoup):
     return None
 
 
-def get_border_countries(soup: BeautifulSoup):
+def get_border_countries_from_archive(soup: BeautifulSoup):
     if para := utils.find_div_by_id(soup, "field-land-boundaries"):
         if border_countries_subfield := para.find("div", class_="category_data subfield text"):
             border_countries_str = border_countries_subfield.get_text()
