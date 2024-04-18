@@ -102,7 +102,8 @@ if __name__ == "__main__":
         year=2020
     )
     scraper.get_country_codes()
-    scraper.scrape_country_for_field("France", archive_scrapers.get_areas_from_web)
+    new_field = scraper.scrape_country_for_field("France", archive_scrapers.get_coastline_from_archive)
+    print(new_field)
     scraper.scrape_countries(field_scrapers)
     factbook_df = pd.DataFrame.from_dict(scraper.countries, orient="index")
     print("Done!")
