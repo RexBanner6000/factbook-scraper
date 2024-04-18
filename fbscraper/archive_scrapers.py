@@ -60,3 +60,10 @@ def get_elevation_from_archive(soup: BeautifulSoup):
             elevations[key] = utils.get_elevation_from_str(value)
         return elevations
     return None
+
+
+def get_irrigated_land_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-irrigated-land"):
+        if value := para.find("span", "subfield-number"):
+            return {"irrigated_land": utils.get_area_from_str(value.get_text())}
+    return None
