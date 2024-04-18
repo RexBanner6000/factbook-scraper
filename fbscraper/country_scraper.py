@@ -10,7 +10,7 @@ from fbscraper import web_scrapers
 from fbscraper.utils import get_country_name
 
 
-field_scrapers = [x[1]for x in getmembers(web_scrapers, isfunction)]
+field_scrapers = [x[1]for x in getmembers(archive_scrapers, isfunction)]
 
 
 class CIAScraper:
@@ -76,6 +76,16 @@ class CIAArchiveScraper:
             soup = BeautifulSoup(fp, 'html.parser')
         return field_scraper(soup)
 
+    def scrape_countries(self, field_scrapers: List[Callable]):
+        for country, data in self.countries.items():
+            print(f"Scraping {country}...")
+            with open(data["link"], encoding="utf-8") as fp:
+                soup = BeautifulSoup(fp, "html.parser")
+            for field_scraper in field_scrapers:
+                new_fields = field_scraper(soup)
+                if new_fields is not None:
+                    data.update(new_fields)
+
 
 if __name__ == "__main__":
     # scraper = CIAScraper(
@@ -93,4 +103,6 @@ if __name__ == "__main__":
     )
     scraper.get_country_codes()
     scraper.scrape_country_for_field("France", archive_scrapers.get_areas_from_web)
+    scraper.scrape_countries(field_scrapers)
+    factbook_df = pd.DataFrame.from_dict(scraper.countries, orient="index")
     print("Done!")
