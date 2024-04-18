@@ -56,7 +56,6 @@ def get_population(soup: BeautifulSoup):
     return None
 
 
-#TODO: 2023 and 2024 not picking up 15-64 group
 def get_age_structures(soup: BeautifulSoup):
     if para := utils.find_div_by_h3_string(soup, "Age structure"):
         return utils.get_age_structures(para.get_text())
