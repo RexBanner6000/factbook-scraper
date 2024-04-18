@@ -50,10 +50,11 @@ class CIAScraper:
 
 
 class CIAArchiveScraper:
-    def __init__(self, countries_path: str, year: int):
+    def __init__(self, countries_path: str, geos_path: str, year: int):
         self.countries_path = countries_path
         self.countries = {}
         self.year = year
+        self.geos_path = geos_path
 
     def get_country_codes(self):
         with open(self.countries_path) as fp:
@@ -64,6 +65,7 @@ class CIAArchiveScraper:
                 continue
             self.countries[get_country_name(tag.text)] = {
                 "country_code": tag.a["href"][8:10],
+                "link": self.geos_path + tag.a["href"][8:10] + ".html",
                 "year": self.year
             }
 
@@ -79,6 +81,7 @@ if __name__ == "__main__":
 
     scraper = CIAArchiveScraper(
         countries_path="S:/datasets/cia-world-factbook/factbook-2020/fields/296.html",
+        geos_path="S:/datasets/cia-world-factbook/factbook-2020/geos/",
         year=2020
     )
     scraper.get_country_codes()
