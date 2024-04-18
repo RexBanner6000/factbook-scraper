@@ -164,6 +164,10 @@ def find_div_by_h3_string(soup: BeautifulSoup, div_name: str):
     return tag.find("p")
 
 
+def find_div_by_id(soup: BeautifulSoup, div_id: str):
+    return soup.find("div", id=div_id)
+
+
 def get_net_migration_from_str(raw_str: str) -> Optional[float]:
     if m := re.search(r"(-?\d{1,3}\.?\d?) migrant", raw_str):
         return float(m.group(1))
@@ -191,3 +195,15 @@ def get_percentages_from_str(raw_str: str, suffix: str = "") -> Optional[dict[st
                 percentages[match[0] + suffix] = float(match[1]) / 100
         return percentages
     return None
+
+
+def get_subfields(soup: BeautifulSoup):
+    subfields = {}
+    subfield_name_tags = soup.find_all("span", "subfield-name")
+    subfield_value_tags = soup.find_all("span", "subfield-number")
+
+    for name_tag, value_tag in zip(subfield_name_tags, subfield_value_tags):
+        subfields[name_tag.get_text().rstrip(":")] = value_tag.get_text()
+
+    return subfields
+

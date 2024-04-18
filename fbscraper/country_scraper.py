@@ -5,6 +5,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from inspect import getmembers, isfunction
+from fbscraper import archive_scrapers
 from fbscraper import web_scrapers
 from fbscraper.utils import get_country_name
 
@@ -69,6 +70,12 @@ class CIAArchiveScraper:
                 "year": self.year
             }
 
+    def scrape_country_for_field(self, country_name: str, field_scraper: Callable):
+        data = self.countries[country_name]
+        with open(data["link"], encoding="utf-8") as fp:
+            soup = BeautifulSoup(fp, 'html.parser')
+        return field_scraper(soup)
+
 
 if __name__ == "__main__":
     # scraper = CIAScraper(
@@ -85,4 +92,5 @@ if __name__ == "__main__":
         year=2020
     )
     scraper.get_country_codes()
+    scraper.scrape_country_for_field("France", archive_scrapers.get_areas_from_web)
     print("Done!")
