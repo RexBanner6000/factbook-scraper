@@ -50,3 +50,13 @@ def get_border_countries_from_archive(soup: BeautifulSoup):
                 )
             }
     return None
+
+
+def get_elevation_from_archive(soup: BeautifulSoup):
+    elevations = {}
+    if para := utils.find_div_by_id(soup, "field-elevation"):
+        subfields = utils.get_subfields(para)
+        for key, value in subfields.items():
+            elevations[key] = utils.get_elevation_from_str(value)
+        return elevations
+    return None

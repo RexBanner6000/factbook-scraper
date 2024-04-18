@@ -207,3 +207,8 @@ def get_subfields(soup: BeautifulSoup):
 
     return subfields
 
+
+def get_elevation_from_str(raw_str: str):
+    if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+)?) m", raw_str):
+        return float(m.group(1).replace(",", ""))
+    return None
