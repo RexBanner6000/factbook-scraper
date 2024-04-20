@@ -84,3 +84,13 @@ def get_age_structures_from_archive(soup: BeautifulSoup):
             age_structures[key] = utils.get_percentage_from_string(value)
         return age_structures
     return None
+
+
+def get_dependency_ratios(soup: BeautifulSoup):
+    dependency_ratios = {}
+    if para := utils.find_div_by_id(soup, "field-dependency-ratios"):
+        subfields = utils.get_subfields(para)
+        for key, value in subfields.items():
+            dependency_ratios[key] = float(value) / 100
+        return dependency_ratios
+    return None
