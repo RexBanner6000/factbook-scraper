@@ -74,3 +74,13 @@ def get_population_from_archive(soup: BeautifulSoup):
         if value := para.find("span", "subfield-number"):
             return {"population": float(value.get_text().replace(",", ""))}
     return None
+
+
+def get_age_structures_from_archive(soup: BeautifulSoup):
+    age_structures = {}
+    if para := utils.find_div_by_id(soup, "field-age-structure"):
+        subfields = utils.get_subfields(para)
+        for key, value in subfields.items():
+            age_structures[key] = utils.get_percentage_from_string(value)
+        return age_structures
+    return None
