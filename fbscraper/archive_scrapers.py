@@ -86,11 +86,21 @@ def get_age_structures_from_archive(soup: BeautifulSoup):
     return None
 
 
-def get_dependency_ratios(soup: BeautifulSoup):
+def get_dependency_ratios_from_archive(soup: BeautifulSoup):
     dependency_ratios = {}
     if para := utils.find_div_by_id(soup, "field-dependency-ratios"):
         subfields = utils.get_subfields(para)
         for key, value in subfields.items():
             dependency_ratios[key] = float(value) / 100
         return dependency_ratios
+    return None
+
+
+def get_median_ages_from_archive(soup: BeautifulSoup):
+    median_ages = {}
+    if para := utils.find_div_by_id(soup, "field-median-age"):
+        subfields = utils.get_subfields(para)
+        for key, value in subfields.items():
+            median_ages[key + "_median_age"] = utils.get_age_from_str(value)
+        return median_ages
     return None
