@@ -113,3 +113,21 @@ def get_population_growth_rate_from_archive(soup: BeautifulSoup):
                 "population_growth_rate": utils.get_percentage_from_string(value.get_text())
             }
     return None
+
+
+def get_birth_rate_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-birth-rate"):
+        if value := para.find("span", "subfield-number"):
+            return {
+                "birth_rate": utils.get_births_from_str(value.get_text())
+            }
+    return None
+
+
+def get_death_rate_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-death-rate"):
+        if value := para.find("span", "subfield-number"):
+            return {
+                "death_rate": utils.get_death_rate_from_string(value.get_text())
+            }
+    return None
