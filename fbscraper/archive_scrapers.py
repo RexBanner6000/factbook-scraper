@@ -104,3 +104,12 @@ def get_median_ages_from_archive(soup: BeautifulSoup):
             median_ages[key + "_median_age"] = utils.get_age_from_str(value)
         return median_ages
     return None
+
+
+def get_population_growth_rate_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-population-growth-rate"):
+        if value := para.find("span", "subfield-number"):
+            return {
+                "population_growth_rate": utils.get_percentage_from_string(value.get_text())
+            }
+    return None
