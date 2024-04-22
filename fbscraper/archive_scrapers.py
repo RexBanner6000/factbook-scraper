@@ -131,3 +131,12 @@ def get_death_rate_from_archive(soup: BeautifulSoup):
                 "death_rate": utils.get_death_rate_from_string(value.get_text())
             }
     return None
+
+
+def get_net_migration_rate(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-net-migration-rate"):
+        if value := para.find("span", "subfield-number"):
+            return {
+                "migration_rate": utils.get_net_migration_from_str(value.get_text())
+            }
+        return None
