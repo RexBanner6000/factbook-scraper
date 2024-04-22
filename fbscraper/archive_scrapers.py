@@ -140,3 +140,9 @@ def get_net_migration_rate(soup: BeautifulSoup):
                 "migration_rate": utils.get_net_migration_from_str(value.get_text())
             }
         return None
+
+
+def get_urbanisation_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-urbanization"):
+        return utils.get_percentages_from_str(para.get_text())
+    return None
