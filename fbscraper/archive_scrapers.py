@@ -161,3 +161,9 @@ def get_life_expectancy_at_birth(soup: BeautifulSoup):
         ):
             return life_expectancies
     return None
+
+
+def get_total_fertility_rate_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-total-fertility-rate"):
+        return {"fertility_rate": utils.get_rate_from_str(para.get_text(), search_term="children born")}
+    return None
