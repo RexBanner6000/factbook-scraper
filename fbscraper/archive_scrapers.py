@@ -209,3 +209,17 @@ def get_children_under_weight_from_archive(soup: BeautifulSoup):
             "child_under_weight": utils.get_percentage_from_string(para.get_text())
         }
     return None
+
+
+def get_education_expenditures_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-education-expenditures"):
+        return {
+            "education_expenditure": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
+
+
+def get_literacy_rates_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-literacy"):
+        return utils.get_percentages_from_str(para.get_text(), suffix="_literacy")
+    return None
