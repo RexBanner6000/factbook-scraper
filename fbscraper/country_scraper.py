@@ -78,6 +78,9 @@ class CIAArchiveScraper:
 
     def scrape_countries(self, field_scrapers: List[Callable]):
         for country, data in self.countries.items():
+
+            if country == "Australia":
+                break
             print(f"Scraping {country}...")
             with open(data["link"], encoding="utf-8") as fp:
                 soup = BeautifulSoup(fp, "html.parser")
