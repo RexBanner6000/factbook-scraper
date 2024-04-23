@@ -167,3 +167,29 @@ def get_total_fertility_rate_from_archive(soup: BeautifulSoup):
     if para := utils.find_div_by_id(soup, "field-total-fertility-rate"):
         return {"fertility_rate": utils.get_rate_from_str(para.get_text(), search_term="children born")}
     return None
+
+
+def get_current_health_expenditure_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-current-health-expenditure"):
+        return {"health_expenditure": utils.get_percentage_from_string(para.get_text())}
+    return None
+
+
+def get_physicians_density_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-physicians-density"):
+        return {
+            "physicians_density": utils.get_rate_from_str(
+                para.get_text(), search_term="physicians", denominator=1000
+            )
+        }
+    return None
+
+
+def get_hospital_bed_density_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-hospital-bed-density"):
+        return {
+            "hospital_bed_density": utils.get_rate_from_str(
+                para.get_text(), search_term="beds", denominator=1000
+            )
+        }
+    return None
