@@ -223,3 +223,25 @@ def get_literacy_rates_from_archive(soup: BeautifulSoup):
     if para := utils.find_div_by_id(soup, "field-literacy"):
         return utils.get_percentages_from_str(para.get_text(), suffix="_literacy")
     return None
+
+
+def get_air_pollutants_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-air-pollutants"):
+        return utils.get_rates_from_str(para.get_text(), denominator=1)
+    return None
+
+
+def get_real_gdp_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-gdp-purchasing-power-parity-real"):
+        return {
+            "real_gdp": utils.get_dollar_string(para.get_text())
+        }
+    return None
+
+
+def get_gdp_growth_rate_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-gdp-real-growth-rate"):
+        return {
+            "gdp_growth": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
