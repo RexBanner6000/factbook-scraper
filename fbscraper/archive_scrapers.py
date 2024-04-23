@@ -193,3 +193,19 @@ def get_hospital_bed_density_from_archive(soup: BeautifulSoup):
             )
         }
     return None
+
+
+def get_obesity_rate_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-obesity-adult-prevalence-rate"):
+        return {
+            "obesity_rate": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
+
+
+def get_children_under_weight_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-children-under-the-age-of-5-years-underweight"):
+        return {
+            "child_under_weight": utils.get_percentage_from_string(para.get_text())
+        }
+    return None
