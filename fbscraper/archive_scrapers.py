@@ -146,3 +146,9 @@ def get_urbanisation_from_archive(soup: BeautifulSoup):
     if para := utils.find_div_by_id(soup, "field-urbanization"):
         return utils.get_percentages_from_str(para.get_text())
     return None
+
+
+def get_infant_mortality_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-infant-mortality-rate"):
+        return utils.get_infant_mortality_rates_from_str(para.get_text())
+    return None
