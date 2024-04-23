@@ -260,3 +260,41 @@ def get_gdp_composition_from_archive(soup: BeautifulSoup):
     if para := utils.find_div_by_id(soup, "field-gdp-composition-by-sector-of-origin"):
         return utils.get_percentages_from_str(para.get_text(), suffix="_prc_gdp")
     return None
+
+
+def get_industrial_production_growth_rate_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-industrial-production-growth-rate"):
+        if value := para.find("span", "subfield-number"):
+            return {
+                "industrial_production_growth": utils.get_percentage_from_string(value.get_text())
+            }
+    return None
+
+
+def get_unemployment_rate_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-unemployment-rate"):
+        if value := para.find("span", "subfield-number"):
+            return {
+                "unemployment_rate": utils.get_percentage_from_string(value.get_text())
+            }
+    return None
+
+
+def get_percentage_in_poverty(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-population-below-poverty-line"):
+        if value := para.find("span", "subfield-number"):
+            return {
+                "poverty_rate": utils.get_percentage_from_string(
+                    value.get_text()
+                )
+            }
+    return None
+
+
+def get_electricity_access_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-electricity-access"):
+        electricity_access = utils.get_percentages_from_str(para.get_text(), suffix="_electricity_access")
+        return {
+            "electricity_access": electricity_access["population_electricity_access"]
+        }
+    return None
