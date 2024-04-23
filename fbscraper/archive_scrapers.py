@@ -245,3 +245,18 @@ def get_gdp_growth_rate_from_archive(soup: BeautifulSoup):
             "gdp_growth": utils.get_percentage_from_string(para.get_text())
         }
     return None
+
+
+def get_inflation_rate_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-inflation-rate-consumer-prices"):
+        if value := para.find("span", "subfield-number"):
+            return {
+                "inflation_rate": utils.get_percentage_from_string(value.get_text())
+            }
+    return None
+
+
+def get_gdp_composition_from_archive(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-gdp-composition-by-sector-of-origin"):
+        return utils.get_percentages_from_str(para.get_text(), suffix="_prc_gdp")
+    return None
