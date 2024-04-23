@@ -152,3 +152,12 @@ def get_infant_mortality_from_archive(soup: BeautifulSoup):
     if para := utils.find_div_by_id(soup, "field-infant-mortality-rate"):
         return utils.get_infant_mortality_rates_from_str(para.get_text())
     return None
+
+
+def get_life_expectancy_at_birth(soup: BeautifulSoup):
+    if para := utils.find_div_by_id(soup, "field-life-expectancy-at-birth"):
+        if life_expectancies := utils.get_rates_from_str(
+                para.get_text(), suffix="_life_expectancy", denominator=1
+        ):
+            return life_expectancies
+    return None
