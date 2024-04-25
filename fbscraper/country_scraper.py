@@ -61,6 +61,8 @@ class CIAArchiveScraper:
         with open(self.countries_path) as fp:
             soup = BeautifulSoup(fp, 'html.parser')
         links = soup.find_all("td", class_="country")
+        if not links:
+            links = soup.find_all("td", class_="fl_region")
         for tag in links:
             if re.search(r"\sOcean\s?", tag.text):
                 continue
