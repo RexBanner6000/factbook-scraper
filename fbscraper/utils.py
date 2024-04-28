@@ -20,8 +20,8 @@ def convert_str_to_float(number_str: str) -> float:
         "trillion": 1_000_000_000_000,
     }
     string_split = number_str.split(" ")
-    if len(string_split) == 1:
-        return float(number_str)
+    if not re.search(rf"{'|'.join(multipliers.keys())}", number_str):
+        return float(string_split[0].replace(",", ""))
     return float(string_split[0]) * multipliers[string_split[1]]
 
 
