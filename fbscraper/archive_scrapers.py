@@ -12,6 +12,7 @@ def get_areas_from_archive(soup: BeautifulSoup):
         return areas
     else:
         category_data = utils.get_category_data_from_category(soup, "Area")
+        a = 0
     return None
 
 
@@ -78,7 +79,9 @@ def get_population_from_archive(soup: BeautifulSoup):
         if value := para.find("span", "subfield-number"):
             category_data = value.get_text()
     else:
-        category_data = utils.get_category_data_from_category(soup, r"Population").get_text()
+        category_data = utils.get_category_data_from_category(
+            soup, r"Population"
+        ).find("div", class_="category_data").get_text()
 
     if category_data is None:
         return None
