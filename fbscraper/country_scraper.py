@@ -80,8 +80,12 @@ class CIAArchiveScraper:
     def scrape_countries(self, field_scrapers: List[Callable]):
         for country, data in self.countries.items():
             print(f"Scraping {country}...")
-            with open(data["link"], encoding="utf-8") as fp:
-                soup = BeautifulSoup(fp, "html.parser")
+            try:
+                with open(data["link"], encoding="utf-8") as fp:
+                    soup = BeautifulSoup(fp, "html.parser")
+            except UnicodeDecodeError:
+                print("\tFailed to open scraper (UnicodeDecodeError)")
+                continue
             for field_scraper in field_scrapers:
                 new_fields = field_scraper(soup)
                 if new_fields is not None:
