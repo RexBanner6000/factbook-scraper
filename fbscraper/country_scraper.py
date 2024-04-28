@@ -87,7 +87,11 @@ class CIAArchiveScraper:
                 print("\tFailed to open scraper (UnicodeDecodeError)")
                 continue
             for field_scraper in field_scrapers:
-                new_fields = field_scraper(soup)
+                new_fields = None
+                try:
+                    new_fields = field_scraper(soup)
+                except ValueError:
+                    print(f"\t{field_scraper.__name__} FAILED")
                 if new_fields is not None:
                     data.update(new_fields)
 
