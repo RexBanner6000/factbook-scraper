@@ -70,14 +70,15 @@ def get_irrigated_land_from_archive(soup: BeautifulSoup):
 
 
 def get_population_from_archive(soup: BeautifulSoup):
+    population = None
     if para := utils.find_div_by_id(soup, "field-population"):
         if value := para.find("span", "subfield-number"):
-            try:
-                population = float(value.get_text().replace(",", ""))
-            except ValueError:
-                population = utils.convert_str_to_float(value.get_text())
-            return {"population": population}
-    return None
+            category_data = value.get_text()
+    else:
+        category_data = utils.get_category_data_from_category(soup, r"Population")
+
+    population = utils.convert_str_to_float(category_data)
+    return {"population": population}
 
 
 def get_age_structures_from_archive(soup: BeautifulSoup):
