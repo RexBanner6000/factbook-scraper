@@ -218,3 +218,10 @@ def get_elevation_from_str(raw_str: str):
     if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+)?) m", raw_str):
         return float(m.group(1).replace(",", ""))
     return None
+
+
+def get_category_data_from_category(soup: BeautifulSoup, category_pattern: str):
+    if category_header := soup.find(string=re.compile(category_pattern)):
+        category_data = category_header.find_parent("tr").find_next("tr")
+        return category_data.find("div", class_="category_data").get_text()
+    return None
