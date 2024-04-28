@@ -221,7 +221,7 @@ def get_elevation_from_str(raw_str: str):
 
 
 def get_category_data_from_category(soup: BeautifulSoup, category_pattern: str):
-    if category_header := soup.find(string=re.compile(category_pattern)):
+    if category_header := soup.find("a", string=re.compile(category_pattern)):
         category_data = category_header.find_parent("tr").find_next("tr")
-        return category_data.find("div", class_="category_data").get_text()
+        return category_data.find("div", class_="category_data")
     return None
