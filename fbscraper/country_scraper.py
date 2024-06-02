@@ -60,34 +60,39 @@ class CIAArchiveScraper:
     def get_country_codes(self):
         with open(self.countries_path) as fp:
             soup = BeautifulSoup(fp, 'html.parser')
-        links = soup.find_all("td", class_="country")
-        if not links:
-            links = soup.find_all("td", class_="fl_region")
+        links = soup.findAll(True, {"class": ["country", "CountryLink", "fl_region"]})
         for tag in links:
             if re.search(r"\sOcean\s?", tag.text):
                 continue
-            self.countries[get_country_name(tag.text)] = {
-                "country_code": tag.a["href"][8:10],
-                "link": self.geos_path + tag.a["href"][8:10] + ".html",
-                "year": self.year
-            }
+            if m := re.search(r"geos/(\w{2}).html", str(tag)):
+                self.countries[get_country_name(tag.text)] = {
+                    "country_code": m.group(1),
+                    "link": self.geos_path + m.group(1) + ".html",
+                    "year": self.year
+                }
 
     def scrape_country_for_field(self, country_name: str, field_scraper: Callable):
         data = self.countries[country_name]
-        with open(data["link"], encoding="utf-8") as fp:
+        with open(data["link"], encoding="utf-8", errors="ignore") as fp:
             soup = BeautifulSoup(fp, 'html.parser')
         return field_scraper(soup)
 
     def scrape_countries(self, field_scrapers: List[Callable]):
         for country, data in self.countries.items():
-
-            if country == "Australia":
-                break
-            print(f"Scraping {country}...")
-            with open(data["link"], encoding="utf-8") as fp:
-                soup = BeautifulSoup(fp, "html.parser")
+            print(f"Scraping {country}...", end="\r", flush=True)
+            try:
+                with open(data["link"], encoding="utf-8", errors="ignore") as fp:
+                    soup = BeautifulSoup(fp, "html.parser")
+            except UnicodeDecodeError:
+                print("\tFailed to open scraper (UnicodeDecodeError)")
+                continue
             for field_scraper in field_scrapers:
-                new_fields = field_scraper(soup)
+                new_fields = None
+                try:
+                    new_fields = field_scraper(soup)
+                except (AttributeError, ValueError):
+                    print(f"\t{country}")
+                    print(f"\t\t{field_scraper.__name__} FAILED")
                 if new_fields is not None:
                     data.update(new_fields)
 

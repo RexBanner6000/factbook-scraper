@@ -10,6 +10,9 @@ def get_areas_from_archive(soup: BeautifulSoup):
         for key, value in subfields.items():
             areas[key + "_area"] = utils.get_area_from_str(value)
         return areas
+    else:
+        category_data = utils.get_category_data_from_category(soup, "Area")
+        a = 0
     return None
 
 
@@ -75,14 +78,21 @@ def get_irrigated_land_from_archive(soup: BeautifulSoup):
 
 
 def get_population_from_archive(soup: BeautifulSoup):
+    population = None
+    category_data = None
     if para := utils.find_div_by_id(soup, "field-population"):
         if value := para.find("span", "subfield-number"):
-            try:
-                population = float(value.get_text().replace(",", ""))
-            except ValueError:
-                population = utils.convert_str_to_float(value.get_text())
-            return {"population": population}
-    return None
+            category_data = value.get_text()
+    else:
+        category_data = utils.get_category_data_from_category(
+            soup, r"Population"
+        ).find("div", class_="category_data").get_text()
+
+    if category_data is None:
+        return None
+    else:
+        population = utils.convert_str_to_float(category_data)
+        return {"population": population}
 
 
 def get_age_structures_from_archive(soup: BeautifulSoup):

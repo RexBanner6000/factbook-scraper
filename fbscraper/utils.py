@@ -20,8 +20,8 @@ def convert_str_to_float(number_str: str) -> float:
         "trillion": 1_000_000_000_000,
     }
     string_split = number_str.split(" ")
-    if len(string_split) == 1:
-        return float(number_str)
+    if not re.search(rf"{'|'.join(multipliers.keys())}", number_str):
+        return float(string_split[0].replace(",", ""))
     return float(string_split[0]) * multipliers[string_split[1]]
 
 
@@ -217,4 +217,10 @@ def get_subfields(soup: BeautifulSoup):
 def get_elevation_from_str(raw_str: str):
     if m := re.search(r"((?:\d{1,3},?)+(?:\.\d+)?) m", raw_str):
         return float(m.group(1).replace(",", ""))
+    return None
+
+
+def get_category_data_from_category(soup: BeautifulSoup, category_pattern: str):
+    if category_header := soup.find("a", string=re.compile(category_pattern)):
+        return category_header.find_parent("tr").find_next("tr")
     return None
