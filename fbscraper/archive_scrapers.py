@@ -21,6 +21,11 @@ def get_coastline_from_archive(soup: BeautifulSoup):
         else:
             coastline_length = utils.get_distance_from_str(value.get_text())
         return {"coastline": coastline_length}
+    elif header := [div for div in soup.find_all("div", id="field") if "Coastline" in div.get_text()]:
+        coastline_field = header[0].find_next("div")
+        coastline_length = utils.get_distance_from_str(coastline_field.get_text())
+        return {"coastline": coastline_length}
+
     return None
 
 
