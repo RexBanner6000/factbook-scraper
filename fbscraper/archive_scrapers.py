@@ -92,6 +92,10 @@ def get_irrigated_land_from_archive(soup: BeautifulSoup):
     if para := utils.find_div_by_id(soup, "field-irrigated-land"):
         if value := para.find("span", "subfield-number"):
             return {"irrigated_land": utils.get_area_from_str(value.get_text())}
+    elif field := utils.get_field_by_name(soup, "Irrigated land"):
+        return {
+            "irrigated_land": utils.get_area_from_str(field.get_text())
+        }
     return None
 
 
