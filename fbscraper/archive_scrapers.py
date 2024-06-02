@@ -83,6 +83,8 @@ def get_elevation_from_archive(soup: BeautifulSoup):
         for key, value in subfields.items():
             elevations[key] = utils.get_elevation_from_str(value)
         return elevations
+    elif field := utils.get_field_by_name(soup, "Elevation"):
+        return utils.get_elevations_from_str(field.get_text())
     return None
 
 
