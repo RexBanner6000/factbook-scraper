@@ -66,6 +66,13 @@ def get_border_countries_from_archive(soup: BeautifulSoup):
                     border_countries_str
                 )
             }
+    elif field := utils.get_field_by_name(soup, "Land boundaries"):
+        border_countries_field = field.find_next("div")
+        return {
+            "border_countries": utils.get_boundary_countries_from_str(
+                border_countries_field.get_text()
+            )
+        }
     return None
 
 
