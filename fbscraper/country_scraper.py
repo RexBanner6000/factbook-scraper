@@ -79,6 +79,8 @@ class CIAArchiveScraper:
 
     def scrape_countries(self, field_scrapers: List[Callable]):
         for country, data in self.countries.items():
+            if country == "Akrotiri":
+                break
             print(f"Scraping {country}...", end="\r", flush=True)
             try:
                 with open(data["link"], encoding="utf-8", errors="ignore") as fp:
@@ -107,12 +109,14 @@ if __name__ == "__main__":
     # print(new_field)
 
     scraper = CIAArchiveScraper(
-        countries_path="S:/datasets/cia-world-factbook/factbook-2020/fields/296.html",
-        geos_path="S:/datasets/cia-world-factbook/factbook-2020/geos/",
-        year=2020
+        countries_path="../data/factbook-2012/fields/2142.html",
+        geos_path="../data/factbook-2012/geos/",
+        year=2012
     )
     scraper.get_country_codes()
-    new_field = scraper.scrape_country_for_field("France", archive_scrapers.get_coastline_from_archive)
+    new_field = scraper.scrape_country_for_field(
+        "France", archive_scrapers.get_urbanisation_from_archive
+    )
     print(new_field)
     scraper.scrape_countries(field_scrapers)
     factbook_df = pd.DataFrame.from_dict(scraper.countries, orient="index")
