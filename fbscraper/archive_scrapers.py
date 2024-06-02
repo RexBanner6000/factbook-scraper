@@ -105,6 +105,8 @@ def get_population_from_archive(soup: BeautifulSoup):
     if para := utils.find_div_by_id(soup, "field-population"):
         if value := para.find("span", "subfield-number"):
             category_data = value.get_text()
+    elif field := utils.get_field_by_name(soup, "Population:"):
+        return {"population": utils.get_population_from_str(field.get_text())}
     else:
         category_data = utils.get_category_data_from_category(
             soup, r"Population"
