@@ -102,6 +102,7 @@ def get_boundary_countries_from_str(raw_str: str) -> Optional[List[str]]:
 
 
 def get_elevations_from_str(raw_str: str) -> Optional[dict[str, float]]:
+    #TODO: Fix this
     elevations = {}
     elevation_labels = [
         "highest_elevation",
