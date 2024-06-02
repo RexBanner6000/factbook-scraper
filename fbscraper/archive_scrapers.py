@@ -38,6 +38,10 @@ def get_terrain_from_archive(soup: BeautifulSoup):
         return {
             "terrain": para.find("div", class_="category_data subfield text").get_text().strip()
         }
+    elif field := utils.get_field_by_name(soup, "Terrain"):
+        return {
+            "terrain": field.get_text().strip()
+        }
     return None
 
 
