@@ -50,6 +50,10 @@ def get_climate_from_archive(soup: BeautifulSoup):
         return {
             "climate": para.find("div", class_="category_data subfield text").get_text().strip()
         }
+    elif field := utils.get_field_by_name(soup, "Climate"):
+        return {
+            "climate": field.get_text().strip()
+        }
     return None
 
 
