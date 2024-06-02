@@ -224,3 +224,11 @@ def get_category_data_from_category(soup: BeautifulSoup, category_pattern: str):
     if category_header := soup.find("a", string=re.compile(category_pattern)):
         return category_header.find_parent("tr").find_next("tr")
     return None
+
+
+def get_field_by_name(soup: BeautifulSoup, name: str):
+    fields = soup.find_all("div", id="field")
+    header = [div for div in fields if name in div.get_text()]
+    if header is not None:
+        return header[0].find_next("div")
+    return None

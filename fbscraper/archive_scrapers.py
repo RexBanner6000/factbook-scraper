@@ -10,6 +10,8 @@ def get_areas_from_archive(soup: BeautifulSoup):
         for key, value in subfields.items():
             areas[key + "_area"] = utils.get_area_from_str(value)
         return areas
+    elif field := utils.get_field_by_name(soup, "Area"):
+        return utils.get_areas_from_str(field.get_text())
     else:
         category_data = utils.get_category_data_from_category(soup, "Area")
         a = 0
@@ -24,8 +26,7 @@ def get_coastline_from_archive(soup: BeautifulSoup):
         else:
             coastline_length = utils.get_distance_from_str(value.get_text())
         return {"coastline": coastline_length}
-    elif header := [div for div in soup.find_all("div", id="field") if "Coastline" in div.get_text()]:
-        coastline_field = header[0].find_next("div")
+    elif coastline_field := utils.get_field_by_name(soup, "Coastline"):
         coastline_length = utils.get_distance_from_str(coastline_field.get_text())
         return {"coastline": coastline_length}
 
