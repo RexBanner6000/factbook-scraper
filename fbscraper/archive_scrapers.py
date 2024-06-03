@@ -126,6 +126,10 @@ def get_age_structures_from_archive(soup: BeautifulSoup):
         for key, value in subfields.items():
             age_structures[key] = utils.get_percentage_from_string(value)
         return age_structures
+    elif field := utils.get_field_by_name(soup, "Age structure"):
+        #TODO Get all fields here
+        all_fields = field.find_parent("tr").find_next("td")
+        return utils.get_age_structures(all_fields.get_text())
     return None
 
 
@@ -136,6 +140,8 @@ def get_dependency_ratios_from_archive(soup: BeautifulSoup):
         for key, value in subfields.items():
             dependency_ratios[key] = float(value) / 100
         return dependency_ratios
+    elif field := utils.get_field_by_name(soup, "Dependency ratios"):
+        return utils.get_dependency_ratios_from_str(field.get_text())
     return None
 
 
